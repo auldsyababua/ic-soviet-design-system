@@ -1,0 +1,71 @@
+.btn {
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+  background: var(--mat-enamel);
+  border: 1px solid var(--enamel-800);
+  border-radius: var(--r-machined);
+  /* raise + an inner backlight at the bottom edge when armed (transparent otherwise) */
+  box-shadow: var(--raise), inset 0 -2px 7px -3px var(--armed, transparent);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  transition:
+    box-shadow var(--dur-thunk) var(--ease-thunk),
+    transform var(--dur-thunk) var(--ease-thunk);
+}
+.btn:active {
+  box-shadow: var(--inset-deep);
+  transform: translateY(1px);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--raise), var(--focus-outline);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--inset-deep);
+}
+
+.primary {
+  background: var(--mat-enamel);
+}
+.secondary {
+  background: var(--mat-steel);
+}
+.danger {
+  color: var(--signal-hazard-bright);
+  border-color: var(--signal-hazard);
+}
+
+.sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.md {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+.lg {
+  padding: 11px 22px;
+  font-size: 15px;
+}
+
+.icon {
+  display: inline-flex;
+}
+.label {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
