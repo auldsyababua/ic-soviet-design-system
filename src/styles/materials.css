@@ -1,1 +1,73 @@
-/* materials — populated in Phase 1 (Task 1.4) */
+/* ============================================================
+   THE FACILITY — material / surface utilities (Task 1.4)
+   Reusable, token-driven helpers wrapping the --mat-* / elevation
+   recipes from tokens.css. Ships in dist/styles.css so the heavy
+   skeuomorphic look survives the design-sync style closure (not
+   JIT-only Tailwind). Dirt lives here; the readable UI stays clean.
+   ============================================================ */
+
+/* — finishes — */
+.mat-enamel {
+  background: var(--mat-enamel);
+}
+.mat-steel {
+  background: var(--mat-steel);
+}
+.mat-crinkle {
+  /* hammered grey-green «молотковая» */
+  background: var(--mat-crinkle);
+  background-blend-mode: overlay, overlay, normal;
+}
+
+/* — machined bezel frame — */
+.bezel {
+  border: var(--bezel-w) solid var(--enamel-800);
+  border-radius: var(--r-panel);
+  box-shadow: var(--raise);
+}
+
+/* — elevation — */
+.inset {
+  /* recessed well / pressed-in surface */
+  box-shadow: var(--inset-deep);
+}
+.occlude {
+  /* hard occlusion / grime inside a recess */
+  box-shadow: var(--occlude);
+}
+
+/* — hazard striping — */
+.hazard-stripe {
+  background: var(--hazard-stripe);
+}
+
+/* — CRT scanline veil (overlay; host gets position) — */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+}
+
+/* — four-corner rivets (overlay; host gets position) — */
+.rivets {
+  position: relative;
+}
+.rivets::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: var(--r-machined);
+  pointer-events: none;
+  background:
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px top 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px top 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px bottom 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px bottom 2px / var(--rivet) var(--rivet) no-repeat;
+}
