@@ -1,22 +1,18 @@
 import { defineConfig } from 'tsup';
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, cpSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
 import { join } from 'node:path';
 
-// Collect every component CSS Module under src/ (recursively). Their scoped
-// class names are preserved by concatenation.
-function collectModuleCss(dir: string, acc: string[] = []): string[] {
-  for (const entry of readdirSync(dir)) {
-    const p = join(dir, entry);
-    if (statSync(p).isDirectory()) collectModuleCss(p, acc);
-    else if (entry.endsWith('.module.css')) acc.push(p);
-  }
-  return acc;
-}
-
-// esbuild plugin: after the JS build, concatenate the global CSS layers +
-// all component module css into dist/styles.css, and copy tokens.css →
-// dist/tokens.css. Keeps the visual truth in CSS that ships in dist/ (so it
-// survives `next build` and the design-sync style closure), not JIT Tailwind.
+// esbuild plugin: after the JS build, emit the GLOBAL CSS layers
+// (tokens + fonts + materials) → dist/styles.css, and copy tokens.css →
+// dist/tokens.css. This is the reusable, stable-named, theme + material layer
+// the design-sync style closure depends on — shipped in dist/, not JIT Tailwind.
+//
+// NOTE: per-component CSS Modules are NOT concatenated here. esbuild scopes them
+// (e.g. .btn → a hashed name) and emits dist/index.css matched to dist/index.js
+// when the public barrel imports the components (Phase 6.1). Inlining the RAW
+// source module css here would ship unscoped names that mismatch that JS — so the
+// component layer is left to esbuild's scoped output, and Phase 6.3 decides whether
+// styles.css should @import it for the rendered-design closure.
 //
 // dist/ must be self-contained: source fonts.css references ../../fonts/ (correct
 // from src/styles/, which is what Storybook imports), but the SAME relative path
@@ -30,13 +26,10 @@ const cssBundle = {
       const read = (rel: string) => readFileSync(join(root, rel), 'utf8');
       const tokens = read('src/tokens/tokens.css');
       const fonts = read('src/styles/fonts.css').replace(/\.\.\/\.\.\/fonts\//g, './fonts/');
-      const layers = [tokens, fonts, read('src/styles/materials.css')];
-      for (const file of collectModuleCss(join(root, 'src')).sort()) {
-        layers.push(`/* ${file.slice(root.length + 1)} */\n${readFileSync(file, 'utf8')}`);
-      }
+      const styles = [tokens, fonts, read('src/styles/materials.css')].join('\n');
       const dist = join(root, 'dist');
       mkdirSync(dist, { recursive: true });
-      writeFileSync(join(dist, 'styles.css'), layers.join('\n'));
+      writeFileSync(join(dist, 'styles.css'), styles);
       writeFileSync(join(dist, 'tokens.css'), tokens);
       cpSync(join(root, 'fonts'), join(dist, 'fonts'), { recursive: true });
     });
