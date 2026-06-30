@@ -1,0 +1,7 @@
+{
+  "shape": "storybook",
+  "projectId": null,
+  "package": ".",
+  "globalName": "FacilityDS",
+  "storybookConfigDir": ".storybook"
+}
