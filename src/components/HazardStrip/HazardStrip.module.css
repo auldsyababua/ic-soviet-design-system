@@ -1,0 +1,24 @@
+.strip {
+  display: block;
+  flex: none;
+}
+
+/* short axis = --thickness; long axis fills the host */
+.horizontal {
+  width: 100%;
+  height: var(--thickness);
+}
+.vertical {
+  height: 100%;
+  min-height: var(--thickness);
+  width: var(--thickness);
+}
+
+/* caution = the approved amber/black hazard token */
+.caution {
+  background: var(--hazard-stripe);
+}
+/* danger = emergency red/black, built from signal tokens */
+.danger {
+  background: repeating-linear-gradient(45deg, var(--shadow) 0 14px, var(--signal-hazard) 14px 28px);
+}
