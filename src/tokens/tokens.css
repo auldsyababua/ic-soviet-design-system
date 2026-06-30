@@ -1,1 +1,62 @@
-/* tokens — populated in Phase 1 (Task 1.1) */
+/* ============================================================
+   THE FACILITY — TOKENS (single source of truth)
+   Ported verbatim from the approved token sheet
+   (design-preview/tokens.html :root). Component CSS Modules and
+   the Tailwind preset resolve every value back to these vars, so
+   re-theming = swap these tokens.
+   Six layers: world/neutral · signal/light · geometry · motion ·
+   light/elevation · material recipes.
+   ============================================================ */
+:root {
+  /* — WORLD / NEUTRAL ————————————————————————————— */
+  --enamel-50:#eef0ee; --enamel-100:#d6dad6; --enamel-200:#b3bbb4;
+  --enamel-300:#8d978f; --enamel-400:#707b73; --enamel-500:#5b665c;
+  --enamel-600:#4a544c; --enamel-700:#3b433d; --enamel-800:#2d332f; --enamel-900:#1f231f;
+
+  --concrete-50:#ececea; --concrete-200:#c2c2bd; --concrete-400:#8f8f88;
+  --concrete-600:#63635d; --concrete-800:#3a3a36; --concrete-900:#232320;
+
+  --steel-200:#9aa1a3; --steel-400:#6b7173; --steel-600:#44494b; --steel-800:#2b2f31;
+  --rust:#6e5c4f; --rust-deep:#4a3b31;
+
+  --bone-100:#e8e2d2; --bone-300:#d4c9b0; --bone-500:#b9ad92;
+
+  --shadow:#0c0d0c; --shadow-deep:#060706; --void:#030403;
+
+  /* — SIGNAL / LIGHT (color = meaning) ————————————————— */
+  --signal-ambient:#e8951f;      /* sodium amber — powered / occupied   */
+  --signal-ambient-glow:#ffb84d;
+  --signal-decay:#5fbf95;        /* dead-fluorescent cyan-green — decay  */
+  --signal-active:#3da9ff;       /* ARC-BLUE — active experiment ONLY    */
+  --signal-active-bright:#6fc0ff;
+  --signal-active-deep:#1d7fd6;
+  --signal-hazard:#dd2222;       /* emergency red — alarm / danger ONLY  */
+  --signal-hazard-bright:#ff3b3b;
+  --signal-ok:#46c267;           /* nominal / go                          */
+
+  /* — GEOMETRY ——————————————————————————————————————— */
+  --r-machined:2px; --r-panel:3px; --bezel-w:2px; --rivet:6px; --grid:8px;
+
+  /* — MOTION ————————————————————————————————————————— */
+  --ease-detent:cubic-bezier(.34,1.32,.5,1);   /* overshoot then settle  */
+  --ease-thunk:cubic-bezier(.7,0,.3,1);        /* heavy switch throw     */
+  --ease-needle:cubic-bezier(.22,1.2,.36,1);   /* damped needle settle   */
+  --ease-warm:cubic-bezier(.4,0,.5,1);         /* LED warm-up / cool-down*/
+  --dur-rotate:850ms; --dur-thunk:200ms; --dur-needle:900ms; --dur-warm:320ms;
+
+  /* — LIGHT / ELEVATION (machined, not soft) ——————————— */
+  --inset-deep:inset 0 2px 4px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.04);
+  --raise:0 1px 0 rgba(255,255,255,.06), 0 2px 5px rgba(0,0,0,.6);
+  --occlude:inset 0 0 18px rgba(0,0,0,.55);
+  --focus-outline:0 0 0 2px var(--shadow), 0 0 0 4px var(--signal-active);
+
+  /* — MATERIAL RECIPES ——————————————————————————————— */
+  --mat-enamel: linear-gradient(160deg,#6b766c 0%,#5b665c 38%,#4d574e 100%);
+  --mat-steel:  repeating-linear-gradient(180deg,#5a6062 0,#5a6062 1px,#4f5557 1px,#4f5557 2px),
+                linear-gradient(180deg,#787f81,#494e50);
+  --mat-crinkle:/* "молотковая" hammered grey-green */
+                radial-gradient(circle at 30% 25%, rgba(255,255,255,.05) 0 1px, transparent 1px) ,
+                radial-gradient(circle at 70% 65%, rgba(0,0,0,.18) 0 1px, transparent 1px) ,
+                var(--mat-enamel);
+  --hazard-stripe: repeating-linear-gradient(45deg,#1c1c1c 0 14px,#e8c20f 14px 28px);
+}
