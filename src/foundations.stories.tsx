@@ -13,8 +13,6 @@ import type { Signal } from './types';
 const mono = "'IBM Plex Mono', monospace";
 const saira = "'Saira Condensed', sans-serif";
 
-const vars = (o: Record<string, string>) => o as CSSProperties;
-
 function SectionHead({ no, title, note }: { no: string; title: string; note?: string }) {
   return (
     <div
@@ -100,15 +98,15 @@ function Lamp({ role }: { role: Signal }) {
   const c = signalVar(role);
   return (
     <span
-      style={vars({
-        width: '26px',
-        height: '26px',
+      style={{
+        width: 26,
+        height: 26,
         borderRadius: '50%',
         flex: 'none',
         position: 'relative',
         background: `radial-gradient(circle at 38% 34%, #fff8, transparent 45%), ${c}`,
         boxShadow: `0 0 14px -2px ${c}`,
-      })}
+      }}
     />
   );
 }
