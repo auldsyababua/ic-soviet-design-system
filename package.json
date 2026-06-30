@@ -1,6 +1,8 @@
 {
   "name": "@facility/ds",
   "version": "0.0.0",
+  "description": "Control-panel design system for THE FACILITY — tokens, fonts, and React components for a decaying Soviet-research-complex band site.",
+  "license": "UNLICENSED",
   "private": false,
   "type": "module",
   "sideEffects": [
