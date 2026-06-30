@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>THE FACILITY — Design System · Token Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800&family=Stardos+Stencil:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dseg@0.46.0/css/dseg.css" />
+<style>
+/* ============================================================
+   THE FACILITY — TOKEN SHEET (preview only; not the shipped DS)
+   Everything here is rendered FROM the proposed token variables
+   so the names you see (--enamel-500, --signal-active …) are the
+   actual tokens that will live in tokens.css.
+   ============================================================ */
+:root{
+  /* — WORLD / NEUTRAL ————————————————————————————— */
+  --enamel-50:#eef0ee; --enamel-100:#d6dad6; --enamel-200:#b3bbb4;
+  --enamel-300:#8d978f; --enamel-400:#707b73; --enamel-500:#5b665c;
+  --enamel-600:#4a544c; --enamel-700:#3b433d; --enamel-800:#2d332f; --enamel-900:#1f231f;
+
+  --concrete-50:#ececea; --concrete-200:#c2c2bd; --concrete-400:#8f8f88;
+  --concrete-600:#63635d; --concrete-800:#3a3a36; --concrete-900:#232320;
+
+  --steel-200:#9aa1a3; --steel-400:#6b7173; --steel-600:#44494b; --steel-800:#2b2f31;
+  --rust:#6e5c4f; --rust-deep:#4a3b31;
+
+  --bone-100:#e8e2d2; --bone-300:#d4c9b0; --bone-500:#b9ad92;
+
+  --shadow:#0c0d0c; --shadow-deep:#060706; --void:#030403;
+
+  /* — SIGNAL / LIGHT (color = meaning) ————————————————— */
+  --signal-ambient:#e8951f;      /* sodium amber — powered / occupied   */
+  --signal-ambient-glow:#ffb84d;
+  --signal-decay:#5fbf95;        /* dead-fluorescent cyan-green — decay  */
+  --signal-active:#3da9ff;       /* ARC-BLUE — active experiment ONLY    */
+  --signal-active-bright:#6fc0ff;
+  --signal-active-deep:#1d7fd6;
+  --signal-hazard:#dd2222;       /* emergency red — alarm / danger ONLY  */
+  --signal-hazard-bright:#ff3b3b;
+  --signal-ok:#46c267;           /* nominal / go                          */
+
+  /* — GEOMETRY ——————————————————————————————————————— */
+  --r-machined:2px; --r-panel:3px; --bezel-w:2px; --rivet:6px; --grid:8px;
+
+  /* — MOTION ————————————————————————————————————————— */
+  --ease-detent:cubic-bezier(.34,1.32,.5,1);   /* overshoot then settle  */
+  --ease-thunk:cubic-bezier(.7,0,.3,1);        /* heavy switch throw     */
+  --ease-needle:cubic-bezier(.22,1.2,.36,1);   /* damped needle settle   */
+  --ease-warm:cubic-bezier(.4,0,.5,1);         /* LED warm-up / cool-down*/
+  --dur-rotate:850ms; --dur-thunk:200ms; --dur-needle:900ms; --dur-warm:320ms;
+
+  /* — LIGHT / ELEVATION (machined, not soft) ——————————— */
+  --inset-deep:inset 0 2px 4px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.04);
+  --raise:0 1px 0 rgba(255,255,255,.06), 0 2px 5px rgba(0,0,0,.6);
+  --occlude:inset 0 0 18px rgba(0,0,0,.55);
+  --focus-outline:0 0 0 2px var(--shadow), 0 0 0 4px var(--signal-active);
+
+  /* — MATERIAL RECIPES ——————————————————————————————— */
+  --mat-enamel: linear-gradient(160deg,#6b766c 0%,#5b665c 38%,#4d574e 100%);
+  --mat-steel:  repeating-linear-gradient(180deg,#5a6062 0,#5a6062 1px,#4f5557 1px,#4f5557 2px),
+                linear-gradient(180deg,#787f81,#494e50);
+  --mat-crinkle:/* "молотковая" hammered grey-green */
+                radial-gradient(circle at 30% 25%, rgba(255,255,255,.05) 0 1px, transparent 1px) ,
+                radial-gradient(circle at 70% 65%, rgba(0,0,0,.18) 0 1px, transparent 1px) ,
+                var(--mat-enamel);
+  --hazard-stripe: repeating-linear-gradient(45deg,#1c1c1c 0 14px,#e8c20f 14px 28px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:
+    radial-gradient(120% 80% at 50% -10%, #14171550 0, transparent 60%),
+    var(--shadow-deep);
+  color:var(--enamel-100);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;
+  font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 120px}
+
+/* —— scanline + grain veil over the whole board —— */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:50;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px);
+  mix-blend-mode:multiply; opacity:.35;
+}
+
+/* ============ HEADER / TITLE PLATE ============ */
+.hazard-top{height:14px;background:var(--hazard-stripe);opacity:.85}
+header.plate{
+  margin:28px 0 12px; padding:20px 24px; position:relative;
+  background:var(--mat-crinkle); background-blend-mode:overlay,overlay,normal;
+  border:var(--bezel-w) solid #2e352f; border-radius:var(--r-panel);
+  box-shadow:var(--raise), var(--occlude);
+}
+header.plate::after{ /* rivets */
+  content:""; position:absolute; inset:6px; border-radius:2px; pointer-events:none;
+  background:
+    radial-gradient(circle,#2a2f2a 40%,transparent 42%) left 2px top 2px/var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle,#2a2f2a 40%,transparent 42%) right 2px top 2px/var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle,#2a2f2a 40%,transparent 42%) left 2px bottom 2px/var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle,#2a2f2a 40%,transparent 42%) right 2px bottom 2px/var(--rivet) var(--rivet) no-repeat;
+}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.32em;color:var(--enamel-300);text-transform:uppercase}
+h1{font-family:'Saira Condensed',sans-serif;font-weight:800;letter-spacing:.04em;
+   text-transform:uppercase; margin:.15em 0 .1em; font-size:clamp(30px,5vw,52px); color:var(--bone-100)}
+.sub{font-family:'Saira Condensed',sans-serif;font-weight:500;letter-spacing:.18em;color:var(--enamel-200);text-transform:uppercase;font-size:14px}
+.unit{position:absolute;top:18px;right:22px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--enamel-300);letter-spacing:.1em}
+.unit b{display:block;color:var(--signal-active);font-size:13px;letter-spacing:.2em}
+
+/* ============ SECTION SCAFFOLD ============ */
+section{margin-top:40px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid #2a2f2a;padding-bottom:8px;margin-bottom:18px}
+.sec-no{font-family:'DSEG7 Classic','IBM Plex Mono',monospace;color:var(--signal-active);font-size:18px}
+.sec-title{font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:19px;color:var(--bone-100)}
+.sec-note{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--enamel-400);letter-spacing:.06em}
+.doctrine{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--signal-ambient);
+  border-left:3px solid var(--signal-ambient);padding:6px 12px;margin:0 0 18px;background:#16140c;letter-spacing:.02em}
+
+/* ============ COLOR SWATCHES ============ */
+.ramp{display:flex;flex-wrap:wrap;gap:2px;margin:0 0 14px}
+.swatch{flex:1 1 0;min-width:74px;height:74px;position:relative;border-radius:1px;display:flex;align-items:flex-end;padding:6px}
+.swatch span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;line-height:1.25;color:#0009;background:#fff7;padding:1px 3px;border-radius:1px}
+.swatch.dark span{color:#fffb;background:#0007}
+.ramp-label{font-family:'Saira Condensed',sans-serif;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--enamel-300);margin:0 0 6px}
+
+.signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:6px}
+.sig{padding:16px;border:var(--bezel-w) solid #23271f;border-radius:var(--r-panel);background:#11140f;display:flex;gap:14px;align-items:center;box-shadow:var(--inset-deep)}
+.lamp{width:26px;height:26px;border-radius:50%;flex:none;position:relative;background:#1a1d18;box-shadow:var(--inset-deep)}
+.lamp.on{background:radial-gradient(circle at 38% 34%,#fff8,transparent 45%),var(--c)}
+.lamp.on::after{content:"";position:absolute;inset:-9px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 70%);opacity:.55;filter:blur(2px)}
+.sig .meta b{font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:13px;display:block;color:var(--bone-100)}
+.sig .meta small{font-family:'IBM Plex Mono',monospace;color:var(--enamel-400);font-size:10.5px;letter-spacing:.04em}
+
+/* ============ TYPOGRAPHY ============ */
+.type-grid{display:grid;gap:16px}
+.type-card{border:var(--bezel-w) solid #23271f;border-radius:var(--r-panel);background:#0f120e;padding:18px 20px;box-shadow:var(--inset-deep)}
+.type-role{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--signal-active);margin-bottom:10px}
+.spec-saira{font-family:'Saira Condensed',sans-serif;font-weight:800;letter-spacing:.03em;text-transform:uppercase;font-size:38px;color:var(--bone-100);line-height:1.02}
+.spec-stencil{font-family:'Stardos Stencil',sans-serif;font-weight:700;font-size:30px;color:var(--signal-hazard);letter-spacing:.04em}
+.spec-seg{font-family:'DSEG7 Classic',monospace;font-size:40px;color:var(--signal-ambient);letter-spacing:.06em;text-shadow:0 0 8px #e8951f55}
+.spec-seg.blue{color:var(--signal-active);text-shadow:0 0 8px #3da9ff55}
+.spec-mono{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--signal-decay);line-height:1.5;white-space:pre-wrap}
+.spec-body{font-family:'IBM Plex Sans',sans-serif;font-size:15px;color:var(--enamel-100);max-width:62ch}
+.type-meta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--enamel-400);margin-top:10px;letter-spacing:.03em}
+
+/* ============ MATERIALS ============ */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.mat{height:150px;border-radius:var(--r-panel);position:relative;border:var(--bezel-w) solid #20241e;box-shadow:var(--raise);overflow:hidden}
+.mat .tag{position:absolute;left:8px;bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fffc;background:#000a;padding:2px 6px;border-radius:1px;letter-spacing:.05em}
+.mat.enamel{background:var(--mat-crinkle);background-blend-mode:overlay,overlay,normal}
+.mat.enamel::after{content:"";position:absolute;inset:0;box-shadow:var(--inset-deep);border-radius:inherit}
+.mat.steel{background:var(--mat-steel)}
+.mat.recess{background:var(--mat-enamel)}
+.mat.recess .well{position:absolute;inset:22px;border-radius:2px;background:#1a1d18;box-shadow:var(--inset-deep), var(--occlude)}
+.mat.wear{background:var(--mat-enamel)}
+.mat.wear::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 60%,var(--steel-200) 78%,var(--rust) 92%);
+  -webkit-mask:linear-gradient(110deg,transparent 60%,#000 80%);mask:linear-gradient(110deg,transparent 60%,#000 80%);opacity:.5}
+.mat.hazard{background:var(--hazard-stripe)}
+
+/* ============ MOTION ============ */
+.motion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;align-items:start}
+.demo{border:var(--bezel-w) solid #23271f;border-radius:var(--r-panel);background:#0f120e;padding:18px;box-shadow:var(--inset-deep);text-align:center}
+.demo h3{font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:13px;color:var(--enamel-200);margin:0 0 14px}
+.demo .curve{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--enamel-400);margin-top:12px}
+button.testbtn{margin-top:14px;font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px;
+  color:var(--bone-100);background:linear-gradient(180deg,#3a423b,#2a302b);border:1px solid #1c211c;border-radius:var(--r-machined);
+  padding:8px 16px;cursor:pointer;box-shadow:var(--raise)}
+button.testbtn:active{box-shadow:var(--inset-deep);transform:translateY(1px)}
+button.testbtn:focus-visible{outline:none;box-shadow:var(--raise),var(--focus-outline)}
+
+/* needle gauge */
+.gauge{width:150px;height:90px;margin:0 auto;position:relative}
+.gauge svg{width:100%;height:100%;display:block}
+.needle{transform-origin:75px 78px;transition:transform var(--dur-needle) var(--ease-needle)}
+/* led */
+.bigled{width:46px;height:46px;border-radius:50%;margin:6px auto 0;background:#1a1d18;box-shadow:var(--inset-deep);position:relative;transition:background var(--dur-warm) var(--ease-warm)}
+.bigled.lit{background:radial-gradient(circle at 38% 34%,#fff9,transparent 46%),var(--signal-active)}
+.bigled.lit::after{content:"";position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,var(--signal-active),transparent 70%);opacity:.6;filter:blur(3px);transition:opacity var(--dur-warm) var(--ease-warm)}
+/* switch */
+.toggle{width:54px;height:88px;margin:0 auto;border-radius:5px;background:var(--mat-enamel);box-shadow:var(--raise);position:relative;border:1px solid #20241e}
+.toggle .slot{position:absolute;inset:8px;border-radius:3px;background:#15171300;box-shadow:var(--inset-deep)}
+.toggle .lever{position:absolute;left:9px;right:9px;height:30px;border-radius:3px;top:8px;
+  background:linear-gradient(180deg,#cdd2cc,#7d847d);box-shadow:0 2px 3px #000a, inset 0 1px 0 #fff8;
+  transition:top var(--dur-thunk) var(--ease-thunk)}
+.toggle.on .lever{top:48px;background:linear-gradient(180deg,#7d847d,#cdd2cc)}
+.toggle .lbl{position:absolute;left:0;right:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--enamel-300)}
+.toggle .lbl.o{top:-14px}.toggle .lbl.i{bottom:-14px}
+
+/* ============ STATE / LIGHT ============ */
+.state-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.state-card{border:var(--bezel-w) solid #23271f;border-radius:var(--r-panel);background:#0f120e;padding:18px;box-shadow:var(--inset-deep)}
+.state-card .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--enamel-400);margin-bottom:12px}
+.state-card .v{display:flex;gap:12px;align-items:center}
+.focus-demo{font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px;color:var(--bone-100);
+  background:linear-gradient(180deg,#3a423b,#2a302b);border:1px solid #1c211c;border-radius:var(--r-machined);padding:10px 16px;box-shadow:var(--raise),var(--focus-outline)}
+
+footer{margin-top:60px;border-top:1px solid #2a2f2a;padding-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--enamel-400);letter-spacing:.05em}
+
+@media (prefers-reduced-motion: reduce){
+  .needle,.bigled,.bigled.lit::after,.toggle .lever,button.testbtn{transition:none !important}
+}
+</style>
+</head>
+<body>
+<div class="hazard-top"></div>
+<div class="wrap">
+
+  <header class="plate">
+    <div class="unit">UNIT <b>DS-01</b>TOKEN SHEET<br/>REV. 0 · PREVIEW</div>
+    <div class="eyebrow">Министерство · Ministry-issue visual standard</div>
+    <h1>The Facility — Design System</h1>
+    <div class="sub">Foundations · Token Sheet · «Clean UI inside a dirty world»</div>
+  </header>
+
+  <p class="doctrine">DOCTRINE — COLOR = SIGNAL · amber=ambient · arc-blue=ACTIVE experiment · red=HAZARD only · never decorative neon, never purple. Dirt lives in the world; never on the UI.</p>
+
+  <!-- ============ 1 · COLOR ============ -->
+  <section id="color">
+    <div class="sec-head"><span class="sec-no">01</span><span class="sec-title">Color = Signal</span><span class="sec-note">tokens.css · --enamel-* / --signal-*</span></div>
+
+    <div class="ramp-label">Enamel grey-green · anchor #5b665c (the world's base material)</div>
+    <div class="ramp">
+      <div class="swatch" style="background:var(--enamel-50)"><span>50<br/>#eef0ee</span></div>
+      <div class="swatch" style="background:var(--enamel-100)"><span>100<br/>#d6dad6</span></div>
+      <div class="swatch" style="background:var(--enamel-200)"><span>200<br/>#b3bbb4</span></div>
+      <div class="swatch" style="background:var(--enamel-300)"><span>300<br/>#8d978f</span></div>
+      <div class="swatch dark" style="background:var(--enamel-400)"><span>400<br/>#707b73</span></div>
+      <div class="swatch dark" style="background:var(--enamel-500)"><span>500<br/>#5b665c</span></div>
+      <div class="swatch dark" style="background:var(--enamel-600)"><span>600<br/>#4a544c</span></div>
+      <div class="swatch dark" style="background:var(--enamel-700)"><span>700<br/>#3b433d</span></div>
+      <div class="swatch dark" style="background:var(--enamel-800)"><span>800<br/>#2d332f</span></div>
+      <div class="swatch dark" style="background:var(--enamel-900)"><span>900<br/>#1f231f</span></div>
+    </div>
+
+    <div class="ramp-label">Concrete · steel · rust · bone enamel · shadow</div>
+    <div class="ramp">
+      <div class="swatch" style="background:var(--concrete-200)"><span>concrete<br/>#c2c2bd</span></div>
+      <div class="swatch dark" style="background:var(--concrete-600)"><span>concrete<br/>#63635d</span></div>
+      <div class="swatch" style="background:var(--steel-200)"><span>steel<br/>#9aa1a3</span></div>
+      <div class="swatch dark" style="background:var(--steel-600)"><span>steel<br/>#44494b</span></div>
+      <div class="swatch dark" style="background:var(--rust)"><span>rust<br/>#6e5c4f</span></div>
+      <div class="swatch" style="background:var(--bone-100)"><span>bone<br/>#e8e2d2</span></div>
+      <div class="swatch" style="background:var(--bone-300)"><span>bone<br/>#d4c9b0</span></div>
+      <div class="swatch dark" style="background:var(--shadow)"><span>shadow<br/>#0c0d0c</span></div>
+      <div class="swatch dark" style="background:var(--void)"><span>void<br/>#030403</span></div>
+    </div>
+
+    <div class="ramp-label" style="margin-top:18px">Signal / light — semantic, used sparingly (click a lamp)</div>
+    <div class="signals">
+      <div class="sig"><div class="lamp on" style="--c:var(--signal-ambient)"></div><div class="meta"><b>Ambient</b><small>sodium amber · powered/occupied<br/>--signal-ambient #e8951f</small></div></div>
+      <div class="sig"><div class="lamp on" style="--c:var(--signal-decay)"></div><div class="meta"><b>Decay</b><small>dead-fluorescent green<br/>--signal-decay #5fbf95</small></div></div>
+      <div class="sig"><div class="lamp on" style="--c:var(--signal-active)"></div><div class="meta"><b>Active</b><small>ARC-BLUE · experiment only<br/>--signal-active #3da9ff</small></div></div>
+      <div class="sig"><div class="lamp on" style="--c:var(--signal-hazard)"></div><div class="meta"><b>Hazard</b><small>emergency red · danger only<br/>--signal-hazard #dd2222</small></div></div>
+      <div class="sig"><div class="lamp on" style="--c:var(--signal-ok)"></div><div class="meta"><b>Nominal</b><small>go / ok<br/>--signal-ok #46c267</small></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · TYPE ============ -->
+  <section id="type">
+    <div class="sec-head"><span class="sec-no">02</span><span class="sec-title">Typography</span><span class="sec-note">3 roles · self-hosted · OFL · Latin+Cyrillic</span></div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-role">Display / Signage — Saira Condensed</div>
+        <div class="spec-saira">ОПАСНО / DANGER · REACTOR HALL · CONTAINMENT 04</div>
+        <div class="type-meta">enamel labels, station names, warnings · all-caps, tight, authoritative</div>
+      </div>
+      <div class="type-card">
+        <div class="type-role">Hazard signage — Stardos Stencil</div>
+        <div class="spec-stencil">ВЫСОКОЕ НАПРЯЖЕНИЕ · HIGH VOLTAGE</div>
+        <div class="type-meta">stenciled hazard plates only</div>
+      </div>
+      <div class="type-card">
+        <div class="type-role">Data / Readouts — DSEG (7-seg) + IBM Plex Mono</div>
+        <div class="spec-seg">88.8&nbsp;&nbsp;1138</div>
+        <div class="spec-seg blue" style="font-size:28px;margin-top:6px">03:42:17</div>
+        <div class="spec-mono" style="margin-top:12px">&gt; FACILITY DIAGNOSTIC v4.2
+&gt; core temp ... 412K  [NOMINAL]
+&gt; containment .. ARC-BLUE LOCKED</div>
+        <div class="type-meta">gauges, counters, nixie · terminal / dot-matrix</div>
+      </div>
+      <div class="type-card">
+        <div class="type-role">Body / Liner notes — IBM Plex Sans</div>
+        <div class="spec-body">The crisp UI layer. Track lists, tour dates, credits and liner notes render in a clean neutral grotesk for full readability — the legible surface that sits over the dirty, dangerous world. Real content stays in the reader's language and fully accessible; Cyrillic styling is decorative flavor only.</div>
+        <div class="type-meta">the readable layer · 400 / 500 / 600 / 700</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3 · MATERIALS ============ -->
+  <section id="materials">
+    <div class="sec-head"><span class="sec-no">03</span><span class="sec-title">Materials &amp; Surfaces</span><span class="sec-note">token recipes → component CSS modules</span></div>
+    <div class="mat-grid">
+      <div class="mat enamel"><span class="tag">--mat-crinkle · enamel grey-green (молотковая)</span></div>
+      <div class="mat steel"><span class="tag">--mat-steel · brushed steel</span></div>
+      <div class="mat recess"><div class="well"></div><span class="tag">--inset-deep · recessed well + grime</span></div>
+      <div class="mat wear"><span class="tag">edge-wear → bare metal / rust</span></div>
+      <div class="mat hazard"><span class="tag">--hazard-stripe · danger edge</span></div>
+    </div>
+  </section>
+
+  <!-- ============ 4 · MOTION ============ -->
+  <section id="motion">
+    <div class="sec-head"><span class="sec-no">04</span><span class="sec-title">Motion — mass &amp; bearing friction</span><span class="sec-note">nothing snaps · nothing floats</span></div>
+    <div class="motion-grid">
+      <div class="demo">
+        <h3>Needle · damped settle</h3>
+        <div class="gauge">
+          <svg viewBox="0 0 150 90">
+            <path d="M12 78 A63 63 0 0 1 138 78" fill="none" stroke="#2a2f2a" stroke-width="8"/>
+            <path d="M12 78 A63 63 0 0 1 95 22" fill="none" stroke="#3da9ff" stroke-width="8" opacity=".5"/>
+            <path d="M120 40 A63 63 0 0 1 138 78" fill="none" stroke="#dd2222" stroke-width="8" opacity=".7"/>
+            <g class="needle" id="needle" style="transform:rotate(-78deg)">
+              <line x1="75" y1="78" x2="75" y2="26" stroke="#e8e2d2" stroke-width="2.5"/>
+            </g>
+            <circle cx="75" cy="78" r="6" fill="#7d847d" stroke="#1c211c"/>
+          </svg>
+        </div>
+        <button class="testbtn" onclick="sweep()">Test</button>
+        <div class="curve">--ease-needle · 900ms</div>
+      </div>
+
+      <div class="demo">
+        <h3>LED · warm-up / cool-down</h3>
+        <div class="bigled" id="led"></div>
+        <button class="testbtn" onclick="toggleLed()">Power</button>
+        <div class="curve">--ease-warm · 320ms (no instant on)</div>
+      </div>
+
+      <div class="demo">
+        <h3>Switch · heavy thunk + detent</h3>
+        <div class="toggle" id="sw"><span class="lbl o">O</span><div class="slot"></div><div class="lever"></div><span class="lbl i">I</span></div>
+        <button class="testbtn" onclick="throwSw()">Throw</button>
+        <div class="curve">--ease-thunk · 200ms</div>
+      </div>
+
+      <div class="demo">
+        <h3>Rotation detent (console)</h3>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--enamel-300);text-align:left;line-height:1.7">
+          --dur-rotate <b style="color:var(--signal-active)">850ms</b><br/>
+          --ease-detent overshoot→settle<br/>
+          snap to indexed 90° facings<br/>
+          foreground leads · background lags<br/>
+          micro-oscillation on arrival
+        </div>
+        <div class="curve">heavy turntable into a detent</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5 · STATE / LIGHT ============ -->
+  <section id="state">
+    <div class="sec-head"><span class="sec-no">05</span><span class="sec-title">State &amp; Light</span><span class="sec-note">machined elevation · hard focus</span></div>
+    <div class="state-row">
+      <div class="state-card"><div class="k">Dormant vs Active</div><div class="v">
+        <div class="lamp"></div>
+        <div class="lamp on" style="--c:var(--signal-active)"></div>
+        <small style="font-family:'IBM Plex Mono',monospace;color:var(--enamel-400);font-size:10px">unlit → arc-blue backlight</small>
+      </div></div>
+      <div class="state-card"><div class="k">Focus = hard machined outline</div><div class="v">
+        <span class="focus-demo">FOCUSED CONTROL</span>
+      </div></div>
+      <div class="state-card"><div class="k">Elevation</div><div class="v" style="gap:18px">
+        <div style="width:54px;height:34px;border-radius:3px;background:var(--mat-enamel);box-shadow:var(--raise)"></div>
+        <div style="width:54px;height:34px;border-radius:3px;background:#15171a;box-shadow:var(--inset-deep)"></div>
+        <small style="font-family:'IBM Plex Mono',monospace;color:var(--enamel-400);font-size:10px">raised / recessed</small>
+      </div></div>
+    </div>
+  </section>
+
+  <footer>
+    THE FACILITY · design-system token sheet · preview artifact (not the shipped library) ·
+    fonts via Google Fonts + DSEG (jsDelivr) · honors §9 of the strategic blueprint ·
+    reduced-motion respected.
+  </footer>
+</div>
+
+<script>
+  const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let n=false;
+  function sweep(){
+    const ndl=document.getElementById('needle');
+    n=!n;
+    const deg = n ? 64 : -78;          // swing across the dial, overshoot-settle via CSS easing
+    if(rm){ndl.style.transition='none';}
+    ndl.style.transform='rotate('+deg+'deg)';
+  }
+  let ledOn=false;
+  function toggleLed(){ledOn=!ledOn;document.getElementById('led').classList.toggle('lit',ledOn);}
+  let swOn=false;
+  function throwSw(){swOn=!swOn;document.getElementById('sw').classList.toggle('on',swOn);}
+</script>
+</body>
+</html>
