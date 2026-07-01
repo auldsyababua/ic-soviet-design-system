@@ -48,19 +48,7 @@ function arcPath(fromValue: number, toValue: number, min: number, max: number): 
 }
 
 export const Gauge = forwardRef<HTMLDivElement, GaugeProps>(function Gauge(
-  {
-    value,
-    min = 0,
-    max = 100,
-    unit,
-    size = 'md',
-    hazardFrom,
-    activeFrom,
-    label,
-    className = '',
-    style,
-    ...rest
-  },
+  { value, min = 0, max = 100, unit, size = 'md', hazardFrom, activeFrom, label, className = '', style, ...rest },
   ref,
 ) {
   const reduced = useReducedMotion();
@@ -89,18 +77,10 @@ export const Gauge = forwardRef<HTMLDivElement, GaugeProps>(function Gauge(
           )}
           {/* red hazard zone */}
           {hazardFrom != null && (
-            <path
-              className={styles.hazard}
-              d={arcPath(hazardFrom, max, min, max)}
-              fill="none"
-              strokeWidth={STROKE}
-            />
+            <path className={styles.hazard} d={arcPath(hazardFrom, max, min, max)} fill="none" strokeWidth={STROKE} />
           )}
           {/* needle */}
-          <g
-            className={styles.needle}
-            style={{ ['--angle' as keyof CSSProperties]: `${angle}deg` } as CSSProperties}
-          >
+          <g className={styles.needle} style={{ ['--angle' as keyof CSSProperties]: `${angle}deg` } as CSSProperties}>
             <line x1={CX} y1={CY} x2={CX} y2={CY - (R - 11)} className={styles.needleLine} strokeWidth={2.5} />
           </g>
           <circle cx={CX} cy={CY} r={6} className={styles.hub} />

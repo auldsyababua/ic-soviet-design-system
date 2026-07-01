@@ -29,7 +29,9 @@ function Gallery() {
             <Comp size={24} title={`${name} 24`} />
             <Comp size={48} title={`${name} 48`} />
           </div>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--enamel-300)' }}>{name}</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--enamel-300)' }}>
+            {name}
+          </span>
         </div>
       ))}
     </div>

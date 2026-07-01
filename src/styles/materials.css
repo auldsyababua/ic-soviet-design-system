@@ -66,8 +66,12 @@
   border-radius: var(--r-machined);
   pointer-events: none;
   background:
-    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px top 2px / var(--rivet) var(--rivet) no-repeat,
-    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px top 2px / var(--rivet) var(--rivet) no-repeat,
-    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px bottom 2px / var(--rivet) var(--rivet) no-repeat,
-    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px bottom 2px / var(--rivet) var(--rivet) no-repeat;
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px top 2px / var(--rivet) var(--rivet)
+      no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px top 2px / var(--rivet) var(--rivet)
+      no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px bottom 2px / var(--rivet) var(--rivet)
+      no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px bottom 2px / var(--rivet) var(--rivet)
+      no-repeat;
 }

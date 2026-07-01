@@ -28,9 +28,7 @@ function LiveThree({ position: initial = 0 }: { position?: -1 | 0 | 1 }) {
       position={position}
       checked={position === 1}
       label="MODE"
-      onChange={() =>
-        setPosition((p) => (p === 1 ? 1 : ((p + 1) as -1 | 0 | 1)))
-      }
+      onChange={() => setPosition((p) => (p === 1 ? 1 : ((p + 1) as -1 | 0 | 1)))}
     />
   );
 }

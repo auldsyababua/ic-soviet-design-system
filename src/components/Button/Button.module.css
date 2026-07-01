@@ -8,7 +8,9 @@
   border: 1px solid var(--enamel-800);
   border-radius: var(--r-machined);
   /* raise + an inner backlight at the bottom edge when armed (transparent otherwise) */
-  box-shadow: var(--raise), inset 0 -2px 7px -3px var(--armed, transparent);
+  box-shadow:
+    var(--raise),
+    inset 0 -2px 7px -3px var(--armed, transparent);
   cursor: pointer;
   display: inline-flex;
   align-items: center;

@@ -92,10 +92,7 @@ export const Knob = forwardRef<HTMLDivElement, KnobProps>(function Knob(
   });
 
   return (
-    <div
-      className={[styles.wrap, styles[size], reduced ? styles.reduced : '', className].join(' ')}
-      style={style}
-    >
+    <div className={[styles.wrap, styles[size], reduced ? styles.reduced : '', className].join(' ')} style={style}>
       <div
         ref={ref}
         className={styles.knob}

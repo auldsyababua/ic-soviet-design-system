@@ -56,11 +56,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
       }
     };
     return (
-      <div
-        className={[styles.root, styles[size], styles.three, className].join(' ')}
-        style={style}
-        {...rest}
-      >
+      <div className={[styles.root, styles[size], styles.three, className].join(' ')} style={style} {...rest}>
         <div
           role="radiogroup"
           aria-label={label ?? 'three-position switch'}
@@ -70,11 +66,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
           onKeyDown={onKey}
         >
           <span className={styles.slot} />
-          <span
-            className={styles.lever}
-            data-pos={position}
-            aria-hidden
-          />
+          <span className={styles.lever} data-pos={position} aria-hidden />
           {THREE_POS.map((p) => (
             // semantic radios; visually represented by the single physical lever
             <span

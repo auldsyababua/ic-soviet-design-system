@@ -29,9 +29,7 @@
   transition: opacity var(--dur-warm) var(--ease-warm);
 }
 .lamp.on {
-  background:
-    radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.5), transparent 45%),
-    var(--lamp);
+  background: radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.5), transparent 45%), var(--lamp);
 }
 .lamp.on::after {
   opacity: 0.55;

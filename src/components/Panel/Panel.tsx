@@ -14,8 +14,7 @@ export interface PanelProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
   title?: ReactNode;
 }
 
-const VERTICAL_EDGE = (edge: 'top' | 'bottom' | 'left' | 'right') =>
-  edge === 'left' || edge === 'right';
+const VERTICAL_EDGE = (edge: 'top' | 'bottom' | 'left' | 'right') => edge === 'left' || edge === 'right';
 
 export const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   {
@@ -46,10 +45,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
       {...rest}
     >
       {hazardEdge !== 'none' && (
-        <HazardStrip
-          className={styles.hazard}
-          orientation={VERTICAL_EDGE(hazardEdge) ? 'vertical' : 'horizontal'}
-        />
+        <HazardStrip className={styles.hazard} orientation={VERTICAL_EDGE(hazardEdge) ? 'vertical' : 'horizontal'} />
       )}
       {title && <div className={styles.title}>{title}</div>}
       <div className={styles.body}>{children}</div>

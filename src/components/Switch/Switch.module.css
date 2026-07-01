@@ -109,7 +109,9 @@
   border-radius: 6px;
   background: var(--mat-steel);
   border: 1px solid var(--signal-hazard);
-  box-shadow: var(--raise), inset 0 -2px 7px -3px var(--armed, transparent);
+  box-shadow:
+    var(--raise),
+    inset 0 -2px 7px -3px var(--armed, transparent);
   cursor: pointer;
   transform-origin: top center;
   transition: transform var(--dur-thunk) var(--ease-thunk);

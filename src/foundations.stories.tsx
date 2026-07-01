@@ -25,7 +25,9 @@ function SectionHead({ no, title, note }: { no: string; title: string; note?: st
         marginBottom: 18,
       }}
     >
-      <span style={{ fontFamily: "'DSEG7 Classic', monospace", color: 'var(--signal-active)', fontSize: 18 }}>{no}</span>
+      <span style={{ fontFamily: "'DSEG7 Classic', monospace", color: 'var(--signal-active)', fontSize: 18 }}>
+        {no}
+      </span>
       <span
         style={{
           fontFamily: saira,
@@ -38,7 +40,9 @@ function SectionHead({ no, title, note }: { no: string; title: string; note?: st
       >
         {title}
       </span>
-      {note && <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 11, color: 'var(--enamel-400)' }}>{note}</span>}
+      {note && (
+        <span style={{ marginLeft: 'auto', fontFamily: mono, fontSize: 11, color: 'var(--enamel-400)' }}>{note}</span>
+      )}
     </div>
   );
 }
@@ -221,29 +225,70 @@ function Foundations() {
           </div>
           <div style={card}>
             <div style={role}>Hazard signage — Stardos Stencil</div>
-            <div style={{ fontFamily: "'Stardos Stencil', sans-serif", fontWeight: 700, fontSize: 30, color: 'var(--signal-hazard)', letterSpacing: '.04em' }}>
+            <div
+              style={{
+                fontFamily: "'Stardos Stencil', sans-serif",
+                fontWeight: 700,
+                fontSize: 30,
+                color: 'var(--signal-hazard)',
+                letterSpacing: '.04em',
+              }}
+            >
               ВЫСОКОЕ НАПРЯЖЕНИЕ · HIGH VOLTAGE
             </div>
             <div style={meta}>stenciled hazard plates only</div>
           </div>
           <div style={card}>
             <div style={role}>Data / Readouts — DSEG (7-seg) + IBM Plex Mono</div>
-            <div style={{ fontFamily: "'DSEG7 Classic', monospace", fontSize: 40, color: 'var(--signal-ambient)', letterSpacing: '.06em', textShadow: '0 0 8px #e8951f55' }}>
+            <div
+              style={{
+                fontFamily: "'DSEG7 Classic', monospace",
+                fontSize: 40,
+                color: 'var(--signal-ambient)',
+                letterSpacing: '.06em',
+                textShadow: '0 0 8px #e8951f55',
+              }}
+            >
               88.8&nbsp;&nbsp;1138
             </div>
-            <div style={{ fontFamily: "'DSEG7 Classic', monospace", fontSize: 28, marginTop: 6, color: 'var(--signal-active)', letterSpacing: '.06em', textShadow: '0 0 8px #3da9ff55' }}>
+            <div
+              style={{
+                fontFamily: "'DSEG7 Classic', monospace",
+                fontSize: 28,
+                marginTop: 6,
+                color: 'var(--signal-active)',
+                letterSpacing: '.06em',
+                textShadow: '0 0 8px #3da9ff55',
+              }}
+            >
               03:42:17
             </div>
-            <div style={{ fontFamily: mono, fontSize: 14, color: 'var(--signal-decay)', lineHeight: 1.5, whiteSpace: 'pre-wrap', marginTop: 12 }}>
+            <div
+              style={{
+                fontFamily: mono,
+                fontSize: 14,
+                color: 'var(--signal-decay)',
+                lineHeight: 1.5,
+                whiteSpace: 'pre-wrap',
+                marginTop: 12,
+              }}
+            >
               {'> FACILITY DIAGNOSTIC v4.2\n> core temp ... 412K  [NOMINAL]\n> containment .. ARC-BLUE LOCKED'}
             </div>
             <div style={meta}>gauges, counters, nixie · terminal / dot-matrix</div>
           </div>
           <div style={card}>
             <div style={role}>Body / Liner notes — IBM Plex Sans</div>
-            <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 15, color: 'var(--enamel-100)', maxWidth: '62ch' }}>
-              The crisp UI layer. Track lists, tour dates, credits and liner notes render in a clean neutral grotesk for full
-              readability — the legible surface that sits over the dirty, dangerous world.
+            <div
+              style={{
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                fontSize: 15,
+                color: 'var(--enamel-100)',
+                maxWidth: '62ch',
+              }}
+            >
+              The crisp UI layer. Track lists, tour dates, credits and liner notes render in a clean neutral grotesk for
+              full readability — the legible surface that sits over the dirty, dangerous world.
             </div>
             <div style={meta}>the readable layer · 400 / 500 / 600 / 700</div>
           </div>
@@ -278,7 +323,17 @@ function Foundations() {
 function MatSwatch({ className, tag, inset }: { className: string; tag: string; inset?: boolean }) {
   return (
     <div className={className} style={{ height: 150, position: 'relative', overflow: 'hidden' }}>
-      {inset && <span style={{ position: 'absolute', inset: 22, borderRadius: 2, background: '#1a1d18', boxShadow: 'var(--inset-deep), var(--occlude)' }} />}
+      {inset && (
+        <span
+          style={{
+            position: 'absolute',
+            inset: 22,
+            borderRadius: 2,
+            background: '#1a1d18',
+            boxShadow: 'var(--inset-deep), var(--occlude)',
+          }}
+        />
+      )}
       <span
         style={{
           position: 'absolute',

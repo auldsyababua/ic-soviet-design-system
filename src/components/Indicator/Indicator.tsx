@@ -22,12 +22,7 @@ export const Indicator = forwardRef<HTMLSpanElement, IndicatorProps>(function In
   const ariaLabel = label ?? `${signal} indicator ${on ? 'on' : 'off'}`;
 
   return (
-    <span
-      ref={ref}
-      className={[styles.root, styles[size], className].join(' ')}
-      style={style}
-      {...rest}
-    >
+    <span ref={ref} className={[styles.root, styles[size], className].join(' ')} style={style} {...rest}>
       <span
         className={[styles.lamp, on ? styles.on : '', reduced ? styles.instant : ''].join(' ')}
         role="img"

@@ -16,11 +16,7 @@ export const SignagePlate = forwardRef<HTMLDivElement, SignagePlateProps>(functi
   ref,
 ) {
   return (
-    <div
-      ref={ref}
-      className={[styles.plate, styles[tier], styles[`sev-${severity}`], className].join(' ')}
-      {...rest}
-    >
+    <div ref={ref} className={[styles.plate, styles[tier], styles[`sev-${severity}`], className].join(' ')} {...rest}>
       {icon && (
         <span className={styles.icon} aria-hidden>
           {icon}
