@@ -1,0 +1,86 @@
+.plate {
+  --edge: var(--enamel-800);
+  --ink: var(--bone-100);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: var(--bezel-w) solid var(--edge);
+  border-radius: var(--r-panel);
+  color: var(--ink);
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--ink);
+}
+.label {
+  display: inline-block;
+}
+
+/* ── tier: cast — permanent engraved/embossed enamel plate (Saira Condensed) ── */
+.cast {
+  background: var(--mat-crinkle);
+  background-blend-mode: overlay, overlay, normal;
+  box-shadow: var(--raise), var(--occlude);
+}
+.cast .label {
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 16px;
+  /* engraved: dark cut + light highlight below */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 -1px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ── tier: stencil — sprayed Stardos Stencil on brushed metal ── */
+.stencil {
+  background: var(--mat-steel);
+  box-shadow: var(--raise), var(--inset-deep);
+}
+.stencil .label {
+  font-family: 'Stardos Stencil', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+/* ── tier: taped — improvised handwritten-ish label on a torn strip ── */
+.taped {
+  background: linear-gradient(180deg, #d8cfb6, #c3b896);
+  border-style: dashed;
+  border-color: var(--rust);
+  border-radius: 1px;
+  transform: rotate(-1.2deg);
+  box-shadow: var(--raise);
+}
+.taped .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-size: 14px;
+  color: var(--shadow);
+}
+.taped .icon {
+  color: var(--shadow);
+}
+
+/* ── severity tints text + edge via signal tokens ── */
+.sev-caution {
+  --edge: var(--signal-ambient);
+  --ink: var(--signal-ambient);
+}
+.sev-danger {
+  --edge: var(--signal-hazard);
+  --ink: var(--signal-hazard-bright);
+}
+/* taped keeps dark ink on its pale strip; only the edge tints */
+.taped.sev-caution .label,
+.taped.sev-danger .label,
+.taped.sev-caution .icon,
+.taped.sev-danger .icon {
+  color: var(--shadow);
+}
