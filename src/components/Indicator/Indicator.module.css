@@ -1,0 +1,79 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* — the lamp: inset-dark when off, warms up to a backlit signal when on — */
+.lamp {
+  --lamp: var(--signal-active);
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex: none;
+  position: relative;
+  background: #1a1d18;
+  box-shadow: var(--inset-deep);
+  transition: background var(--dur-warm) var(--ease-warm);
+}
+/* backlight glow halo (warms in with the fill) */
+.lamp::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--lamp), transparent 70%);
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity var(--dur-warm) var(--ease-warm);
+}
+.lamp.on {
+  background:
+    radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.5), transparent 45%),
+    var(--lamp);
+}
+.lamp.on::after {
+  opacity: 0.55;
+}
+
+/* — caption — */
+.label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--enamel-200);
+}
+
+/* — sizes — */
+.sm .lamp {
+  width: 18px;
+  height: 18px;
+}
+.sm .label {
+  font-size: 10px;
+}
+.md .lamp {
+  width: 26px;
+  height: 26px;
+}
+.lg .lamp {
+  width: 36px;
+  height: 36px;
+}
+.lg .label {
+  font-size: 12px;
+}
+
+/* reduced-motion: instant warm-up (belt — JS sets .instant; suspenders below) */
+.instant,
+.instant::after {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lamp,
+  .lamp::after {
+    transition: none;
+  }
+}
