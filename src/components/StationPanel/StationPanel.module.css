@@ -1,0 +1,45 @@
+/* The station is a pure layout shell over Panel — no color/material of its own
+   (Panel supplies the steel bezel + rivets). Every value here is a token. */
+.station {
+  display: block;
+}
+
+/* — header row: engraved title-plate left, status cluster right — */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  flex: none;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* — center controls region — */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* — welded hazard strip along the danger (bottom) edge — */
+.hazardEdge {
+  padding-bottom: 24px;
+}
+.hazard {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
