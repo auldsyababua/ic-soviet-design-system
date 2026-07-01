@@ -1,0 +1,108 @@
+.panel {
+  position: relative;
+  /* short-axis padding holds the body off the bezel + any welded hazard edge */
+  padding: 16px;
+  border: var(--bezel-w) solid var(--enamel-800);
+  border-radius: var(--r-panel);
+  color: var(--bone-100);
+}
+
+/* — finishes (color = material) — */
+.enamel {
+  background: var(--mat-enamel);
+}
+.steel {
+  background: var(--mat-steel);
+  border-color: var(--steel-800);
+}
+.concrete {
+  background: var(--concrete-800);
+  border-color: var(--concrete-900);
+}
+
+/* — elevation — */
+.raised {
+  box-shadow: var(--raise);
+}
+.recessed {
+  box-shadow: var(--inset-deep);
+}
+.flush {
+  box-shadow: none;
+}
+
+/* — four-corner rivet overlay — */
+.rivets::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: var(--r-machined);
+  pointer-events: none;
+  background:
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px top 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px top 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) left 2px bottom 2px / var(--rivet) var(--rivet) no-repeat,
+    radial-gradient(circle, var(--enamel-900) 40%, transparent 42%) right 2px bottom 2px / var(--rivet) var(--rivet) no-repeat;
+}
+
+/* — welded hazard edge: pin the strip flush to the chosen side and inset the
+     body so content never slips under it — */
+.hazard {
+  position: absolute;
+}
+.edge_top > .hazard {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.edge_top {
+  padding-top: 22px;
+}
+.edge_bottom > .hazard {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.edge_bottom {
+  padding-bottom: 22px;
+}
+.edge_left > .hazard {
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+.edge_left {
+  padding-left: 22px;
+}
+.edge_right > .hazard {
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+.edge_right {
+  padding-right: 22px;
+}
+
+/* — engraved title-plate, top-left — */
+.title {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--bone-300);
+  background: var(--mat-crinkle);
+  background-blend-mode: overlay, overlay, normal;
+  border: 1px solid var(--enamel-900);
+  border-radius: var(--r-machined);
+  /* embossed: raised edge + occluded recess, engraved text */
+  box-shadow: var(--raise), var(--occlude);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.body {
+  position: relative;
+}
