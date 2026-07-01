@@ -1,0 +1,4 @@
+# fast pre-commit: format + lint staged files, then typecheck + unit tests
+pnpm exec lint-staged
+pnpm typecheck
+pnpm test

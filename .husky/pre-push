@@ -1,0 +1,2 @@
+# full gate before pushing: typecheck + lint + build + unit tests + storybook build
+pnpm check

@@ -32,7 +32,17 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:stories": "test-storybook",
-    "check": "pnpm typecheck && pnpm lint && pnpm build && pnpm test && pnpm storybook:build"
+    "check": "pnpm typecheck && pnpm lint && pnpm build && pnpm test && pnpm storybook:build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "peerDependencies": {
     "react": ">=18",
@@ -53,7 +63,9 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-storybook": "^10.4.6",
     "globals": "^17.7.0",
+    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
+    "lint-staged": "^17.0.8",
     "postcss": "^8.5.16",
     "prettier": "^3.9.4",
     "react": "^19.2.7",
