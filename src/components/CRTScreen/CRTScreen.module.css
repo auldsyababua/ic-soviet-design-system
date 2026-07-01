@@ -1,0 +1,100 @@
+/* CRTScreen — phosphor monitor frame. A steel-bezel Panel hosts a recessed
+   glass surface with a scanline veil, phosphor bloom, and optional barrel
+   curvature/vignette. CSS treatment only (no WebGL); heavy PostFX lives in the
+   cinematic layer. `--phosphor` is set inline to a signal token by the TSX. */
+
+.frame {
+  /* let the steel bezel hug the tube; the screen owns its own inner padding */
+  display: inline-block;
+  padding: var(--grid);
+}
+
+/* — the glass surface — */
+.screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-machined);
+  background: radial-gradient(120% 120% at 50% 42%, rgba(255, 255, 255, 0.04), transparent 55%), var(--void);
+  /* recessed tube well + inner phosphor bloom warming the whole surface */
+  box-shadow:
+    var(--inset-deep),
+    inset 0 0 60px -12px var(--phosphor, var(--signal-decay));
+  color: var(--phosphor, var(--signal-decay));
+}
+
+/* — content slot: phosphor-tinted, legible, gently blooming — */
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 16px 18px;
+  color: var(--phosphor, var(--signal-decay));
+  /* phosphor glow on the drawn content itself (bloom) */
+  text-shadow:
+    0 0 1px var(--phosphor, var(--signal-decay)),
+    0 0 8px color-mix(in srgb, var(--phosphor, var(--signal-decay)) 55%, transparent);
+}
+
+/* — scanline veil (mirrors the materials.css .scanlines utility) + idle
+     shimmer that slowly drifts the lines; gated by reduced-motion — */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+  opacity: 0.4;
+  animation: crt-shimmer 8s linear infinite;
+}
+
+@keyframes crt-shimmer {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 3px;
+  }
+}
+
+/* — optional barrel curvature + vignette on the glass — */
+.curved .content {
+  transform: perspective(600px) scale(0.985);
+}
+.curved::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: var(--r-machined);
+  /* corner darkening + a faint specular bulge sheen */
+  background:
+    radial-gradient(120% 120% at 50% 40%, transparent 58%, rgba(0, 0, 0, 0.55) 100%),
+    radial-gradient(80% 60% at 50% 22%, rgba(255, 255, 255, 0.06), transparent 60%);
+}
+
+/* — sizes — */
+.sm .screen {
+  width: 260px;
+  height: 176px;
+}
+.md .screen {
+  width: 380px;
+  height: 260px;
+}
+.lg .screen {
+  width: 520px;
+  height: 352px;
+}
+
+/* — reduced-motion: kill the idle shimmer (belt via .instant; suspenders below) — */
+.instant.scanlines::after {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scanlines::after {
+    animation: none;
+  }
+}
