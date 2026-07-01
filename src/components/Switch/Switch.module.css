@@ -1,0 +1,170 @@
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* enamel body with a recessed slot well — the lever rides in the slot */
+.body {
+  position: relative;
+  width: 54px;
+  height: 88px;
+  margin: 0;
+  padding: 0;
+  background: var(--mat-enamel);
+  border: 1px solid var(--enamel-800);
+  border-radius: 5px;
+  box-shadow: var(--raise);
+}
+.button {
+  cursor: pointer;
+  color: inherit;
+}
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.body:focus-visible {
+  outline: none;
+  box-shadow: var(--raise), var(--focus-outline);
+}
+
+/* — sizes (scale the body; lever geometry tracks it) — */
+.sm .body {
+  width: 42px;
+  height: 70px;
+}
+.md .body {
+  width: 54px;
+  height: 88px;
+}
+.lg .body {
+  width: 66px;
+  height: 108px;
+}
+
+/* recessed slot */
+.slot {
+  position: absolute;
+  inset: 8px;
+  border-radius: 3px;
+  box-shadow: var(--inset-deep);
+  pointer-events: none;
+}
+
+/* the weighted lever — default at top (O / off) */
+.lever {
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 8px;
+  height: 30px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--steel-200), var(--steel-400));
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.67),
+    inset 0 1px 0 rgba(255, 255, 255, 0.53);
+  pointer-events: none;
+  transition: top var(--dur-thunk) var(--ease-thunk);
+}
+/* thrown down (I / on) — direction reverses the bevel for a "settled" read */
+.on .lever {
+  top: 48px;
+  background: linear-gradient(180deg, var(--steel-400), var(--steel-200));
+}
+.sm .lever {
+  height: 24px;
+}
+.sm .on .lever {
+  top: 38px;
+}
+.lg .on .lever {
+  top: 60px;
+}
+
+/* engraved O / I ticks */
+.tickO,
+.tickI {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--enamel-300);
+  pointer-events: none;
+}
+.tickO {
+  top: -14px;
+}
+.tickI {
+  bottom: -14px;
+}
+
+/* — guarded flip-cover: must lift before the lever can throw — */
+.cover {
+  position: absolute;
+  inset: -2px;
+  border-radius: 6px;
+  background: var(--mat-steel);
+  border: 1px solid var(--signal-hazard);
+  box-shadow: var(--raise), inset 0 -2px 7px -3px var(--armed, transparent);
+  cursor: pointer;
+  transform-origin: top center;
+  transition: transform var(--dur-thunk) var(--ease-thunk);
+}
+.covered {
+  transform: rotateX(0deg);
+}
+.lifted {
+  transform: rotateX(-115deg);
+  pointer-events: none;
+}
+
+/* — three-position lever facing (–1 up · 0 centre · 1 down) — */
+.three .lever {
+  height: 24px;
+  transition: top var(--dur-thunk) var(--ease-thunk);
+}
+.three .lever[data-pos='-1'] {
+  top: 8px;
+}
+.three .lever[data-pos='0'] {
+  top: 32px;
+}
+.three .lever[data-pos='1'] {
+  top: 56px;
+}
+.three .body:focus-visible {
+  outline: none;
+  box-shadow: var(--raise), var(--focus-outline);
+}
+
+/* visually-hidden semantic radios */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--enamel-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lever,
+  .cover {
+    transition: none;
+  }
+}
