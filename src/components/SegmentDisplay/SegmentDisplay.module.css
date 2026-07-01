@@ -1,0 +1,65 @@
+.display {
+  --phosphor: var(--signal-ambient);
+  display: inline-grid;
+  position: relative;
+  padding: 10px 14px;
+  background: var(--void);
+  border: var(--bezel-w) solid var(--enamel-900);
+  border-radius: var(--r-machined);
+  box-shadow: var(--inset-deep), var(--occlude);
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  white-space: pre; /* preserve padding spaces as cells */
+}
+
+/* the ghost underlay + lit value occupy the same grid cell, stacked */
+.ghost,
+.lit {
+  grid-area: 1 / 1;
+}
+
+/* unlit "off" segments — faint phosphor afterglow on the glass */
+.ghost {
+  color: var(--phosphor);
+  opacity: 0.085;
+}
+
+/* the energized value with a phosphor bloom */
+.lit {
+  color: var(--phosphor);
+  text-shadow:
+    0 0 6px color-mix(in srgb, var(--phosphor) 45%, transparent),
+    0 0 14px color-mix(in srgb, var(--phosphor) 22%, transparent);
+  transition: opacity var(--dur-warm) var(--ease-warm);
+}
+
+/* brief flicker dip on value change */
+.flicker {
+  opacity: 0.45;
+}
+
+/* ── variants ── */
+.seg7 .ghost,
+.seg7 .lit {
+  font-family: 'DSEG7 Classic', 'IBM Plex Mono', monospace;
+}
+.seg14 .ghost,
+.seg14 .lit {
+  font-family: 'DSEG14 Classic', 'IBM Plex Mono', monospace;
+}
+.dotmatrix {
+  font-size: 30px;
+  letter-spacing: 0.18em;
+}
+.dotmatrix .ghost,
+.dotmatrix .lit {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lit {
+    transition: none;
+  }
+}
