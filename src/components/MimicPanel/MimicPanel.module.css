@@ -1,0 +1,78 @@
+/* The mimic board: a recessed concrete substrate carrying an engraved schematic
+   with live Indicator lamps at its junctions. All color/space via tokens. */
+
+.mimic {
+  display: inline-block;
+}
+
+/* The coordinate field — a square 0–100 stage the schematic + nodes share. */
+.field {
+  position: relative;
+  width: var(--field-size);
+  height: var(--field-size);
+  /* faint machined occlusion so the board reads as inset behind glass */
+  box-shadow: var(--occlude);
+}
+
+/* — engraved schematic runs — the SVG spans the field 1:1 in 0–100 space — */
+.schematic {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* dark cut channel of the engraved pipe/wire run */
+.channel {
+  stroke: var(--void);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+/* light highlight lip — sells the "cut into metal" engraving */
+.highlight {
+  stroke: var(--bone-500);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* — nodes — absolutely positioned over their (x,y) junction — */
+.node {
+  position: absolute;
+  left: var(--nx);
+  top: var(--ny);
+  /* center the lamp on the coordinate; labels flow to the right */
+  transform: translate(-13px, -13px);
+}
+
+/* — sizes: the field scales; the nodes are Indicators (self-sizing) — */
+.sm .field {
+  --field-size: 200px;
+}
+.sm .node {
+  transform: translate(-9px, -9px);
+}
+.md .field {
+  --field-size: 280px;
+}
+.md .node {
+  transform: translate(-13px, -13px);
+}
+.lg .field {
+  --field-size: 380px;
+}
+.lg .node {
+  transform: translate(-18px, -18px);
+}
+
+/* No motion of its own — node warm-up is owned by Indicator, which self-degrades
+   under reduced motion. Belt-and-suspenders no-op block for parity. */
+@media (prefers-reduced-motion: reduce) {
+  .schematic {
+    /* nothing animated here; declared for contract parity */
+  }
+}
