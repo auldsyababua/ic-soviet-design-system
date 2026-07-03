@@ -115,7 +115,6 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
             {ordered.map((s) => (
               <div className="panel" key={s.id} style={{ ['--i' as string]: s.ringIndex }}>
                 <img src={s.plate} alt="" draggable={false} />
-                <span className="column" />
               </div>
             ))}
           </div>

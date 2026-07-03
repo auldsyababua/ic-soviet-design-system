@@ -31,11 +31,17 @@ body {
   overflow: hidden;
   --stage-w: max(100vw, calc(100vh * 1.79167));
   --ring-r: calc(var(--stage-w) * 1.20711);
+  /* FOV knob: perspective distance as a multiple of stage width. 1.0 shows
+     ~4deg of each neighbor at rest; 1.35 narrows the field below one panel's
+     45deg arc, so at rest you see ONLY your station (flat-version framing)
+     and neighbors + pillars only sweep through while turning. */
+  --ring-p-f: 1.35;
+  --panel-scale: calc(1 + (1.20711 / var(--ring-p-f)));
 }
 .ring-wrap {
   position: absolute;
   inset: 0;
-  perspective: var(--stage-w);
+  perspective: calc(var(--stage-w) * var(--ring-p-f));
   perspective-origin: 50% 50%;
 }
 .ring {
@@ -47,7 +53,7 @@ body {
 .panel {
   position: absolute;
   inset: 0;
-  transform: rotateY(calc(var(--i) * 45deg)) translateZ(calc(-1 * var(--ring-r))) scale(2.20711);
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(calc(-1 * var(--ring-r))) scale(var(--panel-scale));
   backface-visibility: hidden;
 }
 .panel img {
@@ -56,30 +62,28 @@ body {
   object-fit: fill; /* stage already holds the exact aspect ratio */
   display: block;
 }
-/* the support column straddling each seam (the diagram's transition-hiders) */
-.panel .column {
+/* structural support pillars: each panel carries half a column on each edge,
+   so adjacent halves meet at the seam as one pillar (the diagram's
+   transition-hiders). Opaque — they fully cover the hard image cut. */
+.panel::before,
+.panel::after {
+  content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  right: -2.6%;
-  width: 5.2%;
+  width: 3.2%;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(3, 4, 3, 0) 0%,
-    rgba(6, 7, 6, 0.9) 12%,
-    #101210 26%,
-    #1a1d1a 42%,
-    #23271f 50%,
-    #1a1d1a 58%,
-    #101210 74%,
-    rgba(6, 7, 6, 0.9) 88%,
-    rgba(3, 4, 3, 0) 100%
-  );
-  box-shadow:
-    inset 2px 0 3px rgba(255, 255, 255, 0.04),
-    inset -2px 0 3px rgba(0, 0, 0, 0.6);
+}
+.panel::before {
+  left: 0;
+  background: linear-gradient(90deg, #161815 0%, #1f231f 35%, #12140f 78%, rgba(8, 9, 8, 0) 100%);
+  box-shadow: inset 3px 0 4px rgba(255, 255, 255, 0.05);
+}
+.panel::after {
+  right: 0;
+  background: linear-gradient(270deg, #161815 0%, #1f231f 35%, #12140f 78%, rgba(8, 9, 8, 0) 100%);
+  box-shadow: inset -3px 0 4px rgba(255, 255, 255, 0.05);
 }
 /* — the live screen overlay (mounted over the plate's dark glass) — */
 .screen {
