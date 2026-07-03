@@ -33,21 +33,23 @@ export const STATIONS: Station[] = [
     plate: '/plates/st-media.jpg',
     screen: SCREEN,
   },
-  {
-    id: 'discography',
-    label: 'DISCOGRAPHY',
-    route: '/discography',
-    ringIndex: 1,
-    plate: '/plates/st-discography.jpg',
-    screen: { left: 36.6, top: 48.9, width: 27.2, height: 22.4 },
-  },
+  // ring order groups like-environments: outdoor pair (media, tour) adjacent;
+  // the black-hole chamber wraps around to sit beside media's arc-blue shimmer
   {
     id: 'tour',
     label: 'TOUR / DISPATCH',
     route: '/tour',
-    ringIndex: 2,
+    ringIndex: 1,
     plate: '/plates/st-tour.jpg',
     screen: { left: 36.9, top: 50.1, width: 26.8, height: 21.8 },
+  },
+  {
+    id: 'discography',
+    label: 'DISCOGRAPHY',
+    route: '/discography',
+    ringIndex: 2,
+    plate: '/plates/st-discography.jpg',
+    screen: { left: 36.6, top: 48.9, width: 27.2, height: 22.4 },
   },
   {
     id: 'gallery',
@@ -57,7 +59,7 @@ export const STATIONS: Station[] = [
     plate: '/plates/st-gallery.jpg',
     // gallery's periscope viewer stands in front of the monitor chin — keep the
     // screen inside the glass, ending above the binoculars
-    screen: { left: 37.6, top: 50.2, width: 25.2, height: 17.2 },
+    screen: { left: 37.6, top: 50.2, width: 25.2, height: 16.2 },
   },
   {
     id: 'about',

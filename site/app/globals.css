@@ -22,150 +22,55 @@ body {
   aspect-ratio: 2752 / 1536;
 }
 
-/* — plates — */
-.plate {
+/* — the octagon filmstrip: all plates side by side, separated by support
+     columns; rotating slides the strip past the intermediate stations — */
+.stage {
+  overflow: hidden;
+}
+.strip {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  will-change: transform;
+}
+.panel {
+  position: relative;
+  flex: 1 0 0;
+  height: 100%;
+}
+.panel img {
   width: 100%;
   height: 100%;
   object-fit: fill; /* stage already holds the exact aspect ratio */
-  opacity: 0;
-  visibility: hidden;
-  will-change: transform, opacity;
+  display: block;
 }
-.plate.active {
-  opacity: 1;
-  visibility: visible;
-  z-index: 1;
-}
-/* heavy motor turn: the room is continuous, so the whole view SWEEPS —
-   outgoing console slides away, incoming sweeps in from the turn side,
-   crossfading mid-flight, then clunks into the detent with a damped
-   overshoot (spec v2 §3 / v1 §5 "chair on its bearing"). */
-@keyframes plate-enter-right {
-  0% {
-    opacity: 0;
-    transform: translateX(26%) scale(1.02);
-  }
-  32% {
-    opacity: 0;
-  }
-  58% {
-    opacity: 1;
-  }
-  86% {
-    transform: translateX(-1.1%) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-@keyframes plate-enter-left {
-  0% {
-    opacity: 0;
-    transform: translateX(-26%) scale(1.02);
-  }
-  32% {
-    opacity: 0;
-  }
-  58% {
-    opacity: 1;
-  }
-  86% {
-    transform: translateX(1.1%) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-@keyframes plate-exit-left {
-  0% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  42% {
-    opacity: 1;
-  }
-  72% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-26%) scale(1.02);
-  }
-}
-@keyframes plate-exit-right {
-  0% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  42% {
-    opacity: 1;
-  }
-  72% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(26%) scale(1.02);
-  }
-}
-
-/* the unlit pod wall you sweep past between consoles — covers the plate
-   handoff so the two images never double-expose */
-.turn-veil {
+/* the support column straddling each seam (the diagram's transition-hiders) */
+.panel .column {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  top: 0;
+  bottom: 0;
+  right: -2.6%;
+  width: 5.2%;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(120% 90% at 50% 45%, rgba(3, 4, 3, 0.92) 55%, #030403 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(3, 4, 3, 0) 0%,
+    rgba(6, 7, 6, 0.9) 12%,
+    #101210 26%,
+    #1a1d1a 42%,
+    #23271f 50%,
+    #1a1d1a 58%,
+    #101210 74%,
+    rgba(6, 7, 6, 0.9) 88%,
+    rgba(3, 4, 3, 0) 100%
+  );
+  box-shadow:
+    inset 2px 0 3px rgba(255, 255, 255, 0.04),
+    inset -2px 0 3px rgba(0, 0, 0, 0.6);
 }
-@keyframes veil-sweep {
-  0% {
-    opacity: 0;
-  }
-  38% {
-    opacity: 1;
-  }
-  62% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-.stage.turning .turn-veil {
-  animation: veil-sweep 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
-}
-html[data-motion='reduced'] .stage.turning .turn-veil {
-  animation: none !important;
-}
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion='full']) .stage.turning .turn-veil {
-    animation: none !important;
-  }
-}
-.plate.active.from-right {
-  animation: plate-enter-right 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
-}
-.plate.active.from-left {
-  animation: plate-enter-left 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
-}
-.plate.exit-left,
-.plate.exit-right {
-  visibility: visible;
-  z-index: 0;
-}
-.plate.exit-left {
-  animation: plate-exit-left 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
-}
-.plate.exit-right {
-  animation: plate-exit-right 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
-}
-
 /* — the live screen overlay (mounted over the plate's dark glass) — */
 .screen {
   position: absolute;
@@ -263,22 +168,12 @@ html[data-motion='reduced'] .stage.turning .turn-veil {
 /* Reduced motion: honored from the OS by default, but user-overridable via the
    HUD toggle (html[data-motion] is set by the shell; absent = no-JS → honor OS). */
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-motion='full']) .plate,
-  html:not([data-motion='full']) .plate.active,
-  html:not([data-motion='full']) .plate.exit-left,
-  html:not([data-motion='full']) .plate.exit-right {
-    animation: none !important;
-  }
+  html:not([data-motion='full']) .strip,
   html:not([data-motion='full']) .screen {
     transition: none !important;
   }
 }
-html[data-motion='reduced'] .plate,
-html[data-motion='reduced'] .plate.active,
-html[data-motion='reduced'] .plate.exit-left,
-html[data-motion='reduced'] .plate.exit-right {
-  animation: none !important;
-}
+html[data-motion='reduced'] .strip,
 html[data-motion='reduced'] .screen {
   transition: none !important;
 }
