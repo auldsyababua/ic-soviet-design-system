@@ -146,6 +146,10 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
         <button type="button" className="motion-toggle" onClick={toggleMotion} aria-pressed={reduced}>
           MOTION: {reduced ? 'REDUCED' : 'FULL'}
         </button>
+        {/* build tag — bump the letter on visual changes so stale caches are obvious */}
+        <span className="motion-toggle" style={{ cursor: 'default' }}>
+          REV C
+        </span>
       </nav>
     </>
   );
