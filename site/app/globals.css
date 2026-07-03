@@ -22,23 +22,33 @@ body {
   aspect-ratio: 2752 / 1536;
 }
 
-/* — the octagon filmstrip: all plates side by side, separated by support
-     columns; rotating slides the strip past the intermediate stations — */
+/* — the octagon cylinder: the eight plates are mounted on a ring around the
+     camera (rotateY(i·45°) then pushed out to the ring radius); rotating the
+     ring swings consoles in with real perspective change. R = (W/2)/tan(22.5°)
+     ≈ 1.20711·W, and scale(2.20711) = (P+R)/P with perspective P = W cancels
+     the perspective shrink so the facing panel fills the stage exactly at rest. — */
 .stage {
   overflow: hidden;
+  --stage-w: max(100vw, calc(100vh * 1.79167));
+  --ring-r: calc(var(--stage-w) * 1.20711);
 }
-.strip {
+.ring-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  display: flex;
+  inset: 0;
+  perspective: var(--stage-w);
+  perspective-origin: 50% 50%;
+}
+.ring {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 .panel {
-  position: relative;
-  flex: 1 0 0;
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(calc(-1 * var(--ring-r))) scale(2.20711);
+  backface-visibility: hidden;
 }
 .panel img {
   width: 100%;
@@ -83,10 +93,14 @@ body {
     inset 0 0 4px rgba(0, 0, 0, 0.9);
   display: flex;
   flex-direction: column;
-  transition: opacity 320ms cubic-bezier(0.4, 0, 0.5, 1);
+  /* CRT warm-in only: the fade applies arriving at a station (slight delay
+     after the detent), never leaving */
+  transition: opacity 340ms cubic-bezier(0.4, 0, 0.5, 1) 140ms;
 }
-.screen.warming {
+.screen.off {
+  /* the motor engaging kills the picture instantly — no ghosting ride-along */
   opacity: 0;
+  transition: none;
 }
 /* scanline veil over screen content */
 .screen::after {
@@ -168,12 +182,12 @@ body {
 /* Reduced motion: honored from the OS by default, but user-overridable via the
    HUD toggle (html[data-motion] is set by the shell; absent = no-JS → honor OS). */
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-motion='full']) .strip,
+  html:not([data-motion='full']) .ring,
   html:not([data-motion='full']) .screen {
     transition: none !important;
   }
 }
-html[data-motion='reduced'] .strip,
+html[data-motion='reduced'] .ring,
 html[data-motion='reduced'] .screen {
   transition: none !important;
 }

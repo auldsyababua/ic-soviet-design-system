@@ -7,27 +7,21 @@ import { StationScreen } from './StationScreen';
 
 const WARM_MS = 320;
 const N = STATIONS.length;
-// travel time scales sublinearly with distance (spec v1 §5)
-const turnMs = (steps: number) => Math.min(700 + 300 * Math.max(0, Math.abs(steps) - 1) + 250, 1500);
+const STEP_DEG = 360 / N;
+// heavy chair: slow, weighted travel; scales sublinearly with distance
+const turnMs = (steps: number) => Math.min(2200 + 650 * Math.max(0, Math.abs(steps) - 1), 3900);
 
-// The pod is an octagon filmstrip: all plates sit side by side in one strip,
-// separated by support columns (the diagram's seam-hiders). Rotating = sliding
-// the strip past the intermediate stations — a multi-step turn sweeps through
-// everything between, always the short way round. Wrap-around uses clone
-// aprons: the shortest path is at most N/2 steps, so N/2 clones on each end
-// let any short-way sweep cross the seam; after landing on a clone the strip
-// silently snaps to the canonical panel. Screens power down for the ride and
-// warm up on settle.
-//
-// Strip layout: [s4..s7, s0..s7, s0..s3] — station ringIndex r at slot r+APRON.
-const APRON = N / 2;
-const SLOTS = N + 2 * APRON;
-const visualOf = (ringIndex: number) => ringIndex + APRON;
-
+// The pod is a real (CSS) cylinder: the eight plates are mounted on a ring
+// around the camera and rotation turns the ring, so an incoming console
+// genuinely swings in — its perspective skews and flattens as it arrives,
+// which is the cue that sells "my chair is rotating" over "flat images on a
+// treadmill". Yaw accumulates in degrees, so shortest-way wraps are free
+// (no clones, no snapping). Screens cut to black the instant the motor
+// engages and CRT-warm back in only after the detent settles.
 export function WorldShell({ initialId }: { initialId: StationId }) {
   const [current, setCurrent] = useState<StationId>(initialId);
-  const [visual, setVisual] = useState(() => visualOf(byId(initialId).ringIndex));
-  const [animMs, setAnimMs] = useState(0); // 0 = no transition (snap)
+  const [yaw, setYaw] = useState(() => -byId(initialId).ringIndex * STEP_DEG);
+  const [animMs, setAnimMs] = useState(0);
   const [settled, setSettled] = useState(true);
   const rotating = useRef(false);
   const osReduced = useReducedMotion();
@@ -61,22 +55,16 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
       // shortest signed distance around the ring: (-N/2, N/2]
       let delta = (((to - from) % N) + N) % N;
       if (delta > N / 2) delta -= N;
-      const targetVisual = visualOf(from) + delta; // may land on a clone (0 or SLOTS-1)
       const ms = reduced ? 0 : turnMs(delta);
 
       setSettled(false);
       setAnimMs(ms);
-      setVisual(targetVisual);
+      setYaw((y) => y - delta * STEP_DEG);
       setCurrent(id);
       if (push) window.history.pushState({ station: id }, '', byId(id).route);
       document.title = `${byId(id).label} · INDISTINCT CHATTERING`;
 
       window.setTimeout(() => {
-        // landed on a clone apron -> silently snap to the canonical panel
-        if (targetVisual < APRON || targetVisual >= APRON + N) {
-          setAnimMs(0);
-          setVisual(visualOf(to));
-        }
         setSettled(true);
         window.setTimeout(() => {
           rotating.current = false;
@@ -111,31 +99,31 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
 
   const station = byId(current);
   const ordered = [...STATIONS].sort((a, b) => a.ringIndex - b.ringIndex);
-  const panels = [...ordered.slice(N - APRON), ...ordered, ...ordered.slice(0, APRON)]; // clone aprons
 
   return (
     <>
       {/* — the pod (decoration) — */}
       <div className="stage" aria-hidden>
-        <div
-          className="strip"
-          style={{
-            width: `${SLOTS * 100}%`,
-            transform: `translateX(-${(visual * 100) / SLOTS}%)`,
-            transition: animMs > 0 ? `transform ${animMs}ms cubic-bezier(0.66, 0, 0.26, 1.08)` : 'none',
-          }}
-        >
-          {panels.map((s, i) => (
-            <div className="panel" key={`${s.id}-${i}`}>
-              <img src={s.plate} alt="" draggable={false} />
-              <span className="column" />
-            </div>
-          ))}
+        <div className="ring-wrap">
+          <div
+            className="ring"
+            style={{
+              transform: `rotateY(${yaw}deg)`,
+              transition: animMs > 0 ? `transform ${animMs}ms cubic-bezier(0.6, 0, 0.22, 1.05)` : 'none',
+            }}
+          >
+            {ordered.map((s) => (
+              <div className="panel" key={s.id} style={{ ['--i' as string]: s.ringIndex }}>
+                <img src={s.plate} alt="" draggable={false} />
+                <span className="column" />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* live screen mounted over the active plate's dark glass */}
         <section
-          className={settled ? 'screen' : 'screen warming'}
+          className={settled ? 'screen' : 'screen off'}
           style={{
             left: `${station.screen.left}%`,
             top: `${station.screen.top}%`,
@@ -152,9 +140,9 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
         <RotaryDial
           variant="compact"
           wrap
-          positions={[...STATIONS].sort((a, b) => a.ringIndex - b.ringIndex).map((s) => ({ id: s.id, label: s.label }))}
+          positions={ordered.map((s) => ({ id: s.id, label: s.label }))}
           index={station.ringIndex}
-          onChange={(i) => rotateTo([...STATIONS].sort((a, b) => a.ringIndex - b.ringIndex)[i].id)}
+          onChange={(i) => rotateTo(ordered[i].id)}
         />
         <button type="button" className="motion-toggle" onClick={toggleMotion} aria-pressed={reduced}>
           MOTION: {reduced ? 'REDUCED' : 'FULL'}
