@@ -38,53 +38,121 @@ body {
   visibility: visible;
   z-index: 1;
 }
-/* heavy motor turn: incoming plate sweeps in from the turn side, outgoing
-   sweeps away — crossfade + lateral pan (spec v2 §3) */
+/* heavy motor turn: the room is continuous, so the whole view SWEEPS —
+   outgoing console slides away, incoming sweeps in from the turn side,
+   crossfading mid-flight, then clunks into the detent with a damped
+   overshoot (spec v2 §3 / v1 §5 "chair on its bearing"). */
 @keyframes plate-enter-right {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(3.5%);
+    transform: translateX(26%) scale(1.02);
   }
-  to {
+  32% {
+    opacity: 0;
+  }
+  58% {
     opacity: 1;
-    transform: translateX(0);
+  }
+  86% {
+    transform: translateX(-1.1%) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 @keyframes plate-enter-left {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(-3.5%);
+    transform: translateX(-26%) scale(1.02);
   }
-  to {
+  32% {
+    opacity: 0;
+  }
+  58% {
     opacity: 1;
-    transform: translateX(0);
+  }
+  86% {
+    transform: translateX(1.1%) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 @keyframes plate-exit-left {
-  from {
+  0% {
     opacity: 1;
     transform: translateX(0);
   }
-  to {
+  42% {
+    opacity: 1;
+  }
+  72% {
     opacity: 0;
-    transform: translateX(-3.5%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-26%) scale(1.02);
   }
 }
 @keyframes plate-exit-right {
-  from {
+  0% {
     opacity: 1;
     transform: translateX(0);
   }
-  to {
+  42% {
+    opacity: 1;
+  }
+  72% {
     opacity: 0;
-    transform: translateX(3.5%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(26%) scale(1.02);
+  }
+}
+
+/* the unlit pod wall you sweep past between consoles — covers the plate
+   handoff so the two images never double-expose */
+.turn-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120% 90% at 50% 45%, rgba(3, 4, 3, 0.92) 55%, #030403 100%);
+}
+@keyframes veil-sweep {
+  0% {
+    opacity: 0;
+  }
+  38% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.stage.turning .turn-veil {
+  animation: veil-sweep 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
+}
+html[data-motion='reduced'] .stage.turning .turn-veil {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion='full']) .stage.turning .turn-veil {
+    animation: none !important;
   }
 }
 .plate.active.from-right {
-  animation: plate-enter-right 900ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: plate-enter-right 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
 }
 .plate.active.from-left {
-  animation: plate-enter-left 900ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: plate-enter-left 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
 }
 .plate.exit-left,
 .plate.exit-right {
@@ -92,10 +160,10 @@ body {
   z-index: 0;
 }
 .plate.exit-left {
-  animation: plate-exit-left 900ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: plate-exit-left 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
 }
 .plate.exit-right {
-  animation: plate-exit-right 900ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: plate-exit-right 950ms cubic-bezier(0.6, 0, 0.25, 1) both;
 }
 
 /* — the live screen overlay (mounted over the plate's dark glass) — */
@@ -192,14 +260,47 @@ body {
   border: 0;
 }
 
+/* Reduced motion: honored from the OS by default, but user-overridable via the
+   HUD toggle (html[data-motion] is set by the shell; absent = no-JS → honor OS). */
 @media (prefers-reduced-motion: reduce) {
-  .plate,
-  .plate.active,
-  .plate.exit-left,
-  .plate.exit-right {
+  html:not([data-motion='full']) .plate,
+  html:not([data-motion='full']) .plate.active,
+  html:not([data-motion='full']) .plate.exit-left,
+  html:not([data-motion='full']) .plate.exit-right {
     animation: none !important;
   }
-  .screen {
+  html:not([data-motion='full']) .screen {
     transition: none !important;
   }
+}
+html[data-motion='reduced'] .plate,
+html[data-motion='reduced'] .plate.active,
+html[data-motion='reduced'] .plate.exit-left,
+html[data-motion='reduced'] .plate.exit-right {
+  animation: none !important;
+}
+html[data-motion='reduced'] .screen {
+  transition: none !important;
+}
+
+/* HUD motion toggle chip */
+.motion-toggle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--enamel-200, #b3bbb4);
+  background: var(--enamel-800, #2d332f);
+  border: 1px solid var(--enamel-900, #1f231f);
+  border-radius: 2px;
+  padding: 6px 10px;
+  cursor: pointer;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 5px rgba(0, 0, 0, 0.6);
+}
+.motion-toggle:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px #0c0d0c,
+    0 0 0 4px var(--signal-active, #3da9ff);
 }

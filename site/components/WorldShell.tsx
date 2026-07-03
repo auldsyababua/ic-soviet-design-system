@@ -5,7 +5,7 @@ import { RotaryDial, useReducedMotion } from '@facility/ds';
 import { STATIONS, byId, isStationId, type StationId } from '../data/stations';
 import { StationScreen } from './StationScreen';
 
-const ROTATE_MS = 900;
+const ROTATE_MS = 950; // keep in sync with the plate-enter/exit animation duration
 const WARM_MS = 320;
 
 // The world shell: one continuous pod. "Routing" = crossfading/panning between
@@ -17,7 +17,28 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
   const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [warming, setWarming] = useState(false);
   const rotating = useRef(false);
-  const reduced = useReducedMotion();
+  const osReduced = useReducedMotion();
+
+  // Motion override (spec v1 §7 chrome): OS preference by default, user toggle
+  // persisted in localStorage, `?motion=full|reduced` for quick overrides.
+  const [motionOverride, setMotionOverride] = useState<'full' | 'reduced' | null>(null);
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get('motion');
+    const stored = window.localStorage.getItem('ic-motion');
+    const v =
+      param === 'full' || param === 'reduced' ? param : stored === 'full' || stored === 'reduced' ? stored : null;
+    if (v) setMotionOverride(v);
+    if (param === 'full' || param === 'reduced') window.localStorage.setItem('ic-motion', param);
+  }, []);
+  const reduced = motionOverride ? motionOverride === 'reduced' : osReduced;
+  useEffect(() => {
+    document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
+  }, [reduced]);
+  const toggleMotion = () => {
+    const next = reduced ? 'full' : 'reduced';
+    setMotionOverride(next);
+    window.localStorage.setItem('ic-motion', next);
+  };
 
   const rotateTo = useCallback(
     (id: StationId, push = true) => {
@@ -78,7 +99,7 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
   return (
     <>
       {/* — the pod (decoration) — */}
-      <div className="stage" aria-hidden>
+      <div className={leaving ? 'stage turning' : 'stage'} aria-hidden>
         {STATIONS.map((s) => {
           const isActive = s.id === current;
           const isLeaving = s.id === leaving;
@@ -101,6 +122,9 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
             />
           );
         })}
+
+        {/* the dark pod wall swept past between consoles */}
+        <div className="turn-veil" />
 
         {/* live screen mounted over the active plate's dark glass */}
         <section
@@ -127,6 +151,9 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
           index={station.ringIndex}
           onChange={(i) => rotateTo(STATIONS[i].id)}
         />
+        <button type="button" className="motion-toggle" onClick={toggleMotion} aria-pressed={reduced}>
+          MOTION: {reduced ? 'REDUCED' : 'FULL'}
+        </button>
       </nav>
     </>
   );
