@@ -104,19 +104,21 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
     <>
       {/* — the pod (decoration) — */}
       <div className="stage" aria-hidden>
-        <div className="ring-wrap">
-          <div
-            className="ring"
-            style={{
-              transform: `rotateY(${yaw}deg)`,
-              transition: animMs > 0 ? `transform ${animMs}ms cubic-bezier(0.6, 0, 0.22, 1.05)` : 'none',
-            }}
-          >
-            {ordered.map((s) => (
-              <div className="panel" key={s.id} style={{ ['--i' as string]: s.ringIndex }}>
-                <img src={s.plate} alt="" draggable={false} />
-              </div>
-            ))}
+        <div className="ring-scale">
+          <div className="ring-wrap">
+            <div
+              className="ring"
+              style={{
+                transform: `rotateY(${yaw}deg)`,
+                transition: animMs > 0 ? `transform ${animMs}ms cubic-bezier(0.6, 0, 0.22, 1.05)` : 'none',
+              }}
+            >
+              {ordered.map((s) => (
+                <div className="panel" key={s.id} style={{ ['--i' as string]: s.ringIndex }}>
+                  <img src={s.plate} alt="" draggable={false} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -148,7 +150,7 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
         </button>
         {/* build tag — bump the letter on visual changes so stale caches are obvious */}
         <span className="motion-toggle" style={{ cursor: 'default' }}>
-          REV C
+          REV D
         </span>
       </nav>
     </>

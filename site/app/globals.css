@@ -36,7 +36,15 @@ body {
      45deg arc, so at rest you see ONLY your station (flat-version framing)
      and neighbors + pillars only sweep through while turning. */
   --ring-p-f: 1.35;
-  --panel-scale: calc(1 + (1.20711 / var(--ring-p-f)));
+}
+/* 2D zoom AFTER projection: compensates the perspective shrink of the facing
+   panel without inflating panel planes (a scale inside the 3D transform would
+   widen panels past the octagon side length, making neighbors interpenetrate
+   and overdraw the facing panel at the seams). */
+.ring-scale {
+  position: absolute;
+  inset: 0;
+  transform: scale(calc(1 + (1.20711 / var(--ring-p-f))));
 }
 .ring-wrap {
   position: absolute;
@@ -53,7 +61,8 @@ body {
 .panel {
   position: absolute;
   inset: 0;
-  transform: rotateY(calc(var(--i) * 45deg)) translateZ(calc(-1 * var(--ring-r))) scale(var(--panel-scale));
+  /* true octagon: panel width IS the side length — no in-plane scaling */
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(calc(-1 * var(--ring-r)));
   backface-visibility: hidden;
 }
 .panel img {
