@@ -12,7 +12,10 @@ const supported = () => typeof window !== 'undefined' && typeof window.matchMedi
  * in its CSS (suspenders, for SSR/no-JS).
  */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(() => (supported() ? window.matchMedia(QUERY).matches : false));
+  // Always start `false` so server and client first renders agree (hydration-safe);
+  // the effect below syncs to the real preference immediately after mount. No-JS/
+  // SSR motion safety is carried by each component's @media reduce CSS block.
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     if (!supported()) return;

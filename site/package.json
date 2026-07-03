@@ -1,0 +1,23 @@
+{
+  "name": "facility-site",
+  "private": true,
+  "description": "indistinct Chattering — THE FACILITY band-world site. Image-first console per docs/specs/console-image-first-spec.md.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@facility/ds": "file:..",
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
+  }
+}

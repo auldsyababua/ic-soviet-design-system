@@ -6,3 +6,4 @@ fonts
 pnpm-lock.yaml
 design-preview
 *.woff2
+site/.next
