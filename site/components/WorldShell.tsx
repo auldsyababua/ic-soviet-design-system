@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { RotaryDial, useReducedMotion } from '@facility/ds';
 import { STATIONS, byId, isStationId, type StationId } from '../data/stations';
 import { StationScreen } from './StationScreen';
+import { useFacilityAudio } from './useFacilityAudio';
 
 const WARM_MS = 320;
 const N = STATIONS.length;
@@ -25,6 +26,7 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
   const [settled, setSettled] = useState(true);
   const rotating = useRef(false);
   const osReduced = useReducedMotion();
+  const audio = useFacilityAudio();
 
   // Motion override: OS pref by default, HUD toggle + ?motion= override, persisted.
   const [motionOverride, setMotionOverride] = useState<'full' | 'reduced' | null>(null);
@@ -61,17 +63,23 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
       setAnimMs(ms);
       setYaw((y) => y - delta * STEP_DEG);
       setCurrent(id);
+      audio.playServo();
       if (push) window.history.pushState({ station: id }, '', byId(id).route);
       document.title = `${byId(id).label} · INDISTINCT CHATTERING`;
 
       window.setTimeout(() => {
+        audio.stopServo();
+        audio.playClunk();
         setSettled(true);
+        window.setTimeout(() => {
+          audio.playWarm();
+        }, 140);
         window.setTimeout(() => {
           rotating.current = false;
         }, WARM_MS);
       }, ms);
     },
-    [current, reduced],
+    [current, reduced, audio],
   );
 
   // back/forward = spatial history
@@ -148,9 +156,12 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
         <button type="button" className="motion-toggle" onClick={toggleMotion} aria-pressed={reduced}>
           MOTION: {reduced ? 'REDUCED' : 'FULL'}
         </button>
+        <button type="button" className="motion-toggle" onClick={audio.toggle} aria-pressed={audio.enabled}>
+          SOUND: {audio.enabled ? 'ON' : 'OFF'}
+        </button>
         {/* build tag — bump the letter on visual changes so stale caches are obvious */}
         <span className="motion-toggle" style={{ cursor: 'default' }}>
-          REV D
+          REV E
         </span>
       </nav>
     </>

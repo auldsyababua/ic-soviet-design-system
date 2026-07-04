@@ -57,9 +57,9 @@ export const STATIONS: Station[] = [
     route: '/gallery',
     ringIndex: 3,
     plate: '/plates/st-gallery.jpg',
-    // gallery's periscope viewer stands in front of the monitor chin — keep the
-    // screen inside the glass, ending above the binoculars
-    screen: { left: 37.6, top: 50.2, width: 25.2, height: 16.2 },
+    // gallery's periscope viewer stands tall in front of the monitor — keep the
+    // screen well clear of the binocular eyepieces (short, high rect)
+    screen: { left: 37.6, top: 49.2, width: 25.2, height: 12.6 },
   },
   {
     id: 'about',
