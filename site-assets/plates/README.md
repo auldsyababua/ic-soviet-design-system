@@ -18,3 +18,7 @@ Eight photoreal master plates for the image-first console (see `docs/specs/conso
 | st-terminal.jpg    | FACILITY TERMINAL | /terminal    | patch-bay + knife switches                    | THE BLACK HOLE — ring containment, arc-blue                                       |
 
 QA notes (2026-07-03): all screens dark ✓ · no people/hands/chair ✓ · arc-blue confined to media (edge shimmer) and terminal (dominant) ✓. Known tolerated deviations: tiny "VU" lettering on meter faces (consistent across set, illegible-scale realism); st-press broadsheets carry garbled newsprint texture (atmospheric, illegible — regenerate via `generation.retryImage` only if unwanted). Screen rects per plate are measured at implementation time into `stations.json` (spec §4).
+
+## v2 production set (2026-07-04) — CURRENT
+
+Regenerated in one batch: runId `img-gen-1783185283004-wwdrck` (recordId `cmr6mh67z0000puhs13xjl0zl`). Supersedes v1 masters in place. New constraints baked in: DECK CLEARANCE (nothing taller than the monitor's lower bezel — gallery's periscope/binoculars removed), UNIQUE WINGS per station (station-themed left/right instruments), CONTINUOUS CONSOLE (desk runs off both frame edges, no visible ends; edge light falloff for seam pillars). Same pod/camera/monitor grammar and window worlds as v1. Shared screen rect: left 37.5 / top 49.2 / w 25.8 / h 21.4 (% of plate).

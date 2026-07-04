@@ -22,7 +22,7 @@ export interface Station {
 
 // Shared monitor geometry: the batch holds the same monitor unit in every
 // plate; per-plate offsets are tuned by eye against the masters.
-const SCREEN: ScreenRect = { left: 37.4, top: 49.6, width: 26.0, height: 21.6 };
+const SCREEN: ScreenRect = { left: 37.5, top: 49.2, width: 25.8, height: 21.4 };
 
 export const STATIONS: Station[] = [
   {
@@ -41,7 +41,7 @@ export const STATIONS: Station[] = [
     route: '/tour',
     ringIndex: 1,
     plate: '/plates/st-tour.jpg',
-    screen: { left: 36.9, top: 50.1, width: 26.8, height: 21.8 },
+    screen: SCREEN,
   },
   {
     id: 'discography',
@@ -49,7 +49,7 @@ export const STATIONS: Station[] = [
     route: '/discography',
     ringIndex: 2,
     plate: '/plates/st-discography.jpg',
-    screen: { left: 36.6, top: 48.9, width: 27.2, height: 22.4 },
+    screen: SCREEN,
   },
   {
     id: 'gallery',
@@ -57,9 +57,7 @@ export const STATIONS: Station[] = [
     route: '/gallery',
     ringIndex: 3,
     plate: '/plates/st-gallery.jpg',
-    // gallery's periscope viewer stands tall in front of the monitor — keep the
-    // screen well clear of the binocular eyepieces (short, high rect)
-    screen: { left: 37.6, top: 49.2, width: 25.2, height: 12.6 },
+    screen: SCREEN,
   },
   {
     id: 'about',
@@ -67,7 +65,7 @@ export const STATIONS: Station[] = [
     route: '/about',
     ringIndex: 4,
     plate: '/plates/st-about.jpg',
-    screen: { left: 36.9, top: 48.9, width: 26.6, height: 22.0 },
+    screen: SCREEN,
   },
   {
     id: 'press',
@@ -75,7 +73,7 @@ export const STATIONS: Station[] = [
     route: '/press',
     ringIndex: 5,
     plate: '/plates/st-press.jpg',
-    screen: { left: 41.6, top: 49.7, width: 16.6, height: 19.6 },
+    screen: SCREEN,
   },
   {
     id: 'store',
@@ -83,7 +81,7 @@ export const STATIONS: Station[] = [
     route: '/store',
     ringIndex: 6,
     plate: '/plates/st-store.jpg',
-    screen: { left: 36.9, top: 49.2, width: 26.4, height: 22.0 },
+    screen: SCREEN,
   },
   {
     id: 'terminal',
@@ -91,7 +89,7 @@ export const STATIONS: Station[] = [
     route: '/terminal',
     ringIndex: 7,
     plate: '/plates/st-terminal.jpg',
-    screen: { left: 37.0, top: 48.6, width: 26.4, height: 22.2 },
+    screen: SCREEN,
   },
 ];
 
