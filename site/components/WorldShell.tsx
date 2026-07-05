@@ -161,7 +161,7 @@ export function WorldShell({ initialId }: { initialId: StationId }) {
         </button>
         {/* build tag — bump the letter on visual changes so stale caches are obvious */}
         <span className="motion-toggle" style={{ cursor: 'default' }}>
-          REV F
+          REV G
         </span>
       </nav>
     </>

@@ -4,9 +4,9 @@
   "description": "indistinct Chattering — THE FACILITY band-world site. Image-first console per docs/specs/console-image-first-spec.md.",
   "scripts": {
     "dev": "next dev",
-    "dev:fixed": "next dev -p 3210",
+    "dev:fixed": "next dev -p 3310",
     "build": "next build",
-    "start": "next start -p 3210",
+    "start": "next start -p 3310",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

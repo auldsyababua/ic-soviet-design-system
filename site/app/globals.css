@@ -98,7 +98,10 @@ body {
 .screen {
   position: absolute;
   z-index: 2;
-  border-radius: 8px;
+  /* match the CRT glass: gently rounded rectangle, corners more rounded than a
+     UI card. Elliptical radius (horizontal % of width / vertical % of height)
+     keeps the corner arc even despite the wide aspect. */
+  border-radius: 2.6% / 5.2%;
   overflow: hidden;
   background: radial-gradient(120% 90% at 50% 8%, rgba(255, 255, 255, 0.05) 0%, transparent 55%), #0a0d0a;
   box-shadow:

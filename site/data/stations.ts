@@ -20,9 +20,10 @@ export interface Station {
   screen: ScreenRect;
 }
 
-// Shared monitor geometry: the batch holds the same monitor unit in every
-// plate; per-plate offsets are tuned by eye against the masters.
-const SCREEN: ScreenRect = { left: 37.5, top: 49.2, width: 25.8, height: 21.4 };
+// Screen rects measured per plate against the CRT glass (outline-verified).
+// Most v2 plates share the same monitor geometry; discography's is larger.
+const SCREEN: ScreenRect = { left: 36.1, top: 46.0, width: 27.9, height: 23.2 };
+const SCREEN_DISCO: ScreenRect = { left: 34.7, top: 42.1, width: 30.6, height: 25.6 };
 
 export const STATIONS: Station[] = [
   {
@@ -49,7 +50,7 @@ export const STATIONS: Station[] = [
     route: '/discography',
     ringIndex: 2,
     plate: '/plates/st-discography.jpg',
-    screen: SCREEN,
+    screen: SCREEN_DISCO,
   },
   {
     id: 'gallery',
